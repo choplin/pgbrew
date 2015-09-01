@@ -1,0 +1,19 @@
+package main
+
+import (
+	log "github.com/Sirupsen/logrus"
+	"github.com/codegangsta/cli"
+
+	"github.com/choplin/pgbrew/git"
+)
+
+const (
+	gitUrl = "git://git.postgresql.org/git/postgresql"
+)
+
+func doClone(c *cli.Context) {
+	log.Info("clone postgresql git repository")
+	if err := git.Clone(localRepository, gitUrl, c.String("options")); err != nil {
+		log.WithField("err", err).Fatal("failed to clone git reporitory")
+	}
+}

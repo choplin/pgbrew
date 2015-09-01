@@ -1,0 +1,10 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker pull choplin/pgbrew-test-env
+
+script:
+  - make test
