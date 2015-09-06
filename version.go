@@ -86,6 +86,15 @@ func (v *Version) Detail() (*VersionDetail, error) {
 	}, nil
 }
 
+func (v *Version) PgVersion() (string, error) {
+	pg := &Postgres{v}
+	version, err := pg.PgConfig("--version")
+	if err != nil {
+		return "", err
+	}
+	return version, nil
+}
+
 func (v *Version) readExtraInfoFile() error {
 	path := v.ExtraInfoFilePath()
 	out, err := ioutil.ReadFile(path)
