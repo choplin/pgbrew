@@ -28,19 +28,19 @@ func NewCluster(name string) (*Cluster, error) {
 	return c, nil
 }
 
-func AllClusters() []Cluster {
+func AllClusters() []*Cluster {
 	fis, err := ioutil.ReadDir(clusterBase)
 	if err != nil {
 		log.WithField("err", err).Fatal("failed to get all clusters")
 	}
 
-	clusters := make([]Cluster, len(fis))
+	clusters := make([]*Cluster, len(fis))
 	for i, fi := range fis {
 		c, err := NewCluster(fi.Name())
 		if err != nil {
 			log.WithField("err", err).Fatal("failed to get all clusters")
 		}
-		clusters[i] = *c
+		clusters[i] = c
 	}
 	return clusters
 }

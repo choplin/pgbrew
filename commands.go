@@ -170,8 +170,18 @@ var clusterRemoveCommand = cli.Command{
 }
 
 var clusterListCommand = cli.Command{
-	Name:   "list",
-	Usage:  "List clusters",
+	Name:  "list",
+	Usage: "List clusters",
+	Flags: []cli.Flag{
+		cli.StringFlag{
+			Name:  "format,f",
+			Usage: "Output format. available option: pretty plain json. default: pretty.",
+		},
+		cli.BoolFlag{
+			Name:  "detail,d",
+			Usage: "Extend output with detailed information",
+		},
+	},
 	Action: DoClusterList,
 }
 
