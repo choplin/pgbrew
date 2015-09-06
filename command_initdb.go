@@ -43,6 +43,8 @@ func DoInitdb(c *cli.Context) {
 	if err := pg.Initdb(initdbArgs); err != nil {
 		log.WithField("err", err).Fatal("failed to execute initdb")
 	}
+
+	writeClusterVersionFile(name, pg)
 }
 
 func InitdbCompletion(c *cli.Context) {
@@ -53,5 +55,20 @@ func InitdbCompletion(c *cli.Context) {
 		for _, v := range versions {
 			fmt.Println(v.Name)
 		}
+	}
+}
+
+func writeClusterVersionFile(name string, pg *Postgres) {
+	cluster := &Cluster{
+		pg:   pg,
+		name: name,
+	}
+
+	log.WithFields(log.Fields{
+		"version name": pg.Version().Name,
+	}).Info("write a cluster version file")
+
+	if err := cluster.WriteVersionFile(); err != nil {
+		log.WithField("err", err).Fatal("failed to write a cluster version file")
 	}
 }
