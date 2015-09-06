@@ -9,7 +9,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-func doCurrent(c *cli.Context) {
+func DoCurrent(c *cli.Context) {
 	args := c.Args()
 
 	unset := c.Bool("unset")
@@ -77,7 +77,7 @@ func unsetCurrentVersion() {
 	removeCurrentLink()
 }
 
-func currentCompletion(c *cli.Context) {
+func CurrentCompletion(c *cli.Context) {
 	versions := AllVersions()
 	for _, v := range versions {
 		fmt.Println(v.Name)

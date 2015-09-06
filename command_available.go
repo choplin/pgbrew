@@ -9,7 +9,7 @@ import (
 	"github.com/choplin/pgbrew/git"
 )
 
-func doAvailable(c *cli.Context) {
+func DoAvailable(c *cli.Context) {
 	repo, err := git.NewRepository(localRepository)
 	if err != nil {
 		log.WithField("err", err).Fatal("failed to initialize local reporitory")

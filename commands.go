@@ -30,7 +30,7 @@ var initCommand = cli.Command{
 	Usage: "Initialize pgbrew environment",
 	Description: `During initialization process, a config file will be created at ~/.pgbrew/config.json.
    This path is not related to a pgbrew base directory, and not configurable.`,
-	Action: doInit,
+	Action: DoInit,
 	Flags: []cli.Flag{
 		cli.StringFlag{
 			Name:  "path,p",
@@ -42,7 +42,7 @@ var initCommand = cli.Command{
 var cloneCommand = cli.Command{
 	Name:   "clone",
 	Usage:  "Clone PostgreSQL git repository into a local directory",
-	Action: doClone,
+	Action: DoClone,
 	Flags: []cli.Flag{
 		cli.StringFlag{
 			Name:  "options,o",
@@ -54,13 +54,13 @@ var cloneCommand = cli.Command{
 var updateCommand = cli.Command{
 	Name:   "update",
 	Usage:  "Update a local git repository",
-	Action: doUpdate,
+	Action: DoUpdate,
 }
 
 var availableCommand = cli.Command{
 	Name:   "available",
 	Usage:  "List available versions",
-	Action: doAvailable,
+	Action: DoAvailable,
 }
 
 var installCommand = cli.Command{
@@ -84,8 +84,8 @@ var installCommand = cli.Command{
 			Usage: "Allow multiple jobs of make command",
 		},
 	},
-	Action:       doInstall,
-	BashComplete: installCompletion,
+	Action:       DoInstall,
+	BashComplete: InstallCompletion,
 }
 
 var listCommand = cli.Command{
@@ -101,13 +101,13 @@ var listCommand = cli.Command{
 			Usage: "Extend output with detailed information",
 		},
 	},
-	Action: doList,
+	Action: DoList,
 }
 
 var uninstallCommand = cli.Command{
 	Name:         "uninstall",
 	Usage:        "Uninstall a specified version",
-	Action:       doUninstall,
+	Action:       DoUninstall,
 	BashComplete: uninstallCompletion,
 }
 
@@ -123,6 +123,6 @@ var currentCommand = cli.Command{
 			Usage: "Unset a current version",
 		},
 	},
-	Action:       doCurrent,
-	BashComplete: currentCompletion,
+	Action:       DoCurrent,
+	BashComplete: CurrentCompletion,
 }

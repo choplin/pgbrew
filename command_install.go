@@ -13,10 +13,10 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-func doInstall(c *cli.Context) {
+func DoInstall(c *cli.Context) {
 	args := c.Args()
 	if len(args) != 1 {
-		showHelpAndExit(c, fmt.Sprint("<version> must be specified"))
+		showHelpAndExit(c, "<version> must be specified")
 	}
 	version := args[0]
 
@@ -40,7 +40,7 @@ func doInstall(c *cli.Context) {
 	writeVersionFile(name, version, hash)
 }
 
-func installCompletion(c *cli.Context) {
+func InstallCompletion(c *cli.Context) {
 	repo, err := git.NewRepository(localRepository)
 	if err != nil {
 		log.WithField("err", err).Fatal("failed to initialize local reporitory")

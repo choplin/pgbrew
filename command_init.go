@@ -9,13 +9,14 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-func doInit(c *cli.Context) {
+func DoInit(c *cli.Context) {
 	if exists(configFilePath) {
 		fmt.Println("already initilized")
 		os.Exit(0)
 	}
 
-	log.Info(homeDirectory)
+	log.Info("initialize pgbrew")
+
 	basePath := c.String("path")
 	if basePath == "" {
 		basePath = filepath.Join(homeDirectory, ".pgbrew")
@@ -24,6 +25,7 @@ func doInit(c *cli.Context) {
 	dirs := []string{filepath.Dir(configFilePath), basePath}
 	for _, d := range dirs {
 		if !exists(d) {
+			log.WithField("path", d).Debug("create a directory")
 			if err := os.Mkdir(d, 0755); err != nil {
 				log.WithFields(log.Fields{
 					"err":  err,
@@ -40,7 +42,7 @@ func doInit(c *cli.Context) {
 	log.WithFields(log.Fields{
 		"config": config,
 		"path":   configFilePath,
-	}).Info("write config file")
+	}).Debug("write config file")
 	if err := config.Write(configFilePath); err != nil {
 		log.WithField("err", err).Fatal("failed to write a config file")
 	}

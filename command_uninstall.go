@@ -8,7 +8,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-func doUninstall(c *cli.Context) {
+func DoUninstall(c *cli.Context) {
 	args := c.Args()
 	if len(args) != 1 {
 		showHelpAndExit(c, fmt.Sprint("<version name> must be specified"))

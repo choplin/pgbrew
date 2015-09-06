@@ -7,7 +7,7 @@ import (
 	"github.com/choplin/pgbrew/git"
 )
 
-func doUpdate(c *cli.Context) {
+func DoUpdate(c *cli.Context) {
 	log.Info("update a local git repository")
 	repo, err := git.NewRepository(localRepository)
 	if err != nil {
