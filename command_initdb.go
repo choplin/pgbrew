@@ -44,7 +44,7 @@ func DoInitdb(c *cli.Context) {
 		log.WithField("err", err).Fatal("failed to execute initdb")
 	}
 
-	writeClusterVersionFile(name, pg)
+	writeClusterExtraInfoFile(name, pg)
 }
 
 func InitdbCompletion(c *cli.Context) {
@@ -58,17 +58,17 @@ func InitdbCompletion(c *cli.Context) {
 	}
 }
 
-func writeClusterVersionFile(name string, pg *Postgres) {
+func writeClusterExtraInfoFile(name string, pg *Postgres) {
 	cluster := &Cluster{
 		pg:   pg,
-		name: name,
+		Name: name,
 	}
 
 	log.WithFields(log.Fields{
 		"version name": pg.Version().Name,
-	}).Info("write a cluster version file")
+	}).Info("write a cluster extra info file")
 
-	if err := cluster.WriteVersionFile(); err != nil {
-		log.WithField("err", err).Fatal("failed to write a cluster version file")
+	if err := cluster.WriteExtraInfoFile(); err != nil {
+		log.WithField("err", err).Fatal("failed to write a cluster extra info file")
 	}
 }

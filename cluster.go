@@ -8,9 +8,10 @@ import (
 	"github.com/choplin/pgbrew/util"
 )
 
-const clusterVersionFileName = ".pgbrew_version"
+const clusterExtraInfoFile = ".pgbrew_info"
 
 type Cluster struct {
+	Name string
 	pg   *Postgres
 	name string
 }
@@ -24,22 +25,22 @@ func (c *Cluster) Start() error {
 	return c.pg.Start(port)
 }
 
-func (c *Cluster) WriteVersionFile() error {
-	path := c.VersionFilePath()
-	str := c.name
+func (c *Cluster) WriteExtraInfoFile() error {
+	path := c.ExtraInfoFilePath()
+	str := c.Name
 	return ioutil.WriteFile(path, []byte(str), 0600)
 }
 
 func (c *Cluster) Path() string {
-	return filepath.Join(clusterBase, c.name)
+	return filepath.Join(clusterBase, c.Name)
 }
 
-func (c *Cluster) VersionFilePath() string {
-	return filepath.Join(c.Path(), clusterVersionFileName)
+func (c *Cluster) ExtraInfoFilePath() string {
+	return filepath.Join(c.Path(), clusterExtraInfoFile)
 }
 
-func (c *Cluster) readVersionFile() error {
-	path := c.VersionFilePath()
+func (c *Cluster) readExtraInfoFile() error {
+	path := c.ExtraInfoFilePath()
 	out, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
