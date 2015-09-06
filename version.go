@@ -13,9 +13,9 @@ const versionFileName = "version"
 
 // Version represents each installed version.
 type Version struct {
-	Name    string
-	Version string
-	Hash    string
+	Name   string
+	GitRef string
+	Hash   string
 }
 
 // VersionDetail represents detailed information of each installed version. Most of its fields are derived from pg_config.
@@ -57,7 +57,7 @@ func AllVersions() []*Version {
 
 func (v *Version) WriteVersionFile() error {
 	path := v.VersionFilePath()
-	str := v.Hash + "\t" + v.Version
+	str := v.Hash + "\t" + v.GitRef
 	return ioutil.WriteFile(path, []byte(str), 0644)
 }
 
@@ -95,7 +95,7 @@ func (v *Version) readVersionFile() error {
 
 	info := strings.Split(string(out), "\t")
 	v.Hash = info[0]
-	v.Version = info[1]
+	v.GitRef = info[1]
 
 	return nil
 }

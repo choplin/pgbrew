@@ -121,9 +121,9 @@ func makeClean() {
 
 func writeVersionFile(name string, version string, hash string) {
 	installedVersion := Version{
-		Name:    name,
-		Version: version,
-		Hash:    hash,
+		Name:   name,
+		GitRef: version,
+		Hash:   hash,
 	}
 
 	log.WithFields(log.Fields{

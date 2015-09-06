@@ -14,9 +14,9 @@ func TestNewVersion(t *testing.T) {
 
 	version, _ := NewVersion("9.4.4")
 	want := &Version{
-		Name:    "9.4.4",
-		Version: "REL9_4_4",
-		Hash:    "7c055f3ec3bd338a1ebb8c73cff3d01df626471e",
+		Name:   "9.4.4",
+		GitRef: "REL9_4_4",
+		Hash:   "7c055f3ec3bd338a1ebb8c73cff3d01df626471e",
 	}
 	if !reflect.DeepEqual(version, want) {
 		t.Errorf("NewVersion retured a wrong version. got %s, want %s", version, want)
