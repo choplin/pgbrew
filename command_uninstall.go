@@ -22,7 +22,7 @@ func DoUninstall(c *cli.Context) {
 
 	log.WithField("name", name).Info("uninstall")
 	if err := os.RemoveAll(version.Path()); err != nil {
-		log.WithField("err", err.Error()).Fatal("failed to remove version")
+		log.WithField("err", err).Fatal("failed to remove version")
 	}
 }
 
