@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"path/filepath"
 
@@ -13,7 +14,35 @@ const clusterExtraInfoFile = ".pgbrew_info"
 type Cluster struct {
 	Name string
 	pg   *Postgres
-	name string
+}
+
+func NewCluster(name string) (*Cluster, error) {
+	c := &Cluster{Name: name}
+	if !exists(c.Path()) {
+		return nil, fmt.Errorf("cluster %s does not exist", name)
+	}
+
+	if err := c.readExtraInfoFile(); err != nil {
+		return nil, err
+	}
+	return c, nil
+}
+
+func AllClusters() []Cluster {
+	fis, err := ioutil.ReadDir(clusterBase)
+	if err != nil {
+		log.WithField("err", err).Fatal("failed to get all clusters")
+	}
+
+	clusters := make([]Cluster, len(fis))
+	for i, fi := range fis {
+		c, err := NewCluster(fi.Name())
+		if err != nil {
+			log.WithField("err", err).Fatal("failed to get all clusters")
+		}
+		clusters[i] = *c
+	}
+	return clusters
 }
 
 func (c *Cluster) Start() error {

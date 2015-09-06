@@ -25,6 +25,7 @@ var commands = []cli.Command{
 	uninstallCommand,
 	currentCommand,
 	initdbCommand,
+	clusterCommand,
 }
 
 var initCommand = cli.Command{
@@ -162,9 +163,10 @@ var clusterCommand = cli.Command{
 }
 
 var clusterRemoveCommand = cli.Command{
-	Name:   "remove",
-	Usage:  "Remove a specified cluster",
-	Action: DoClusterRemove,
+	Name:         "remove",
+	Usage:        "Remove a specified cluster",
+	Action:       DoClusterRemove,
+	BashComplete: ClusterRemoveCompletion,
 }
 
 var clusterListCommand = cli.Command{
