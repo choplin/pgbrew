@@ -19,7 +19,7 @@ type JsonListEntry struct {
 	ConfigureOptions []string `json:"configureOptions,omitempty"`
 }
 
-func doList(c *cli.Context) {
+func DoList(c *cli.Context) {
 	versions := AllVersions()
 
 	format := c.String("format")

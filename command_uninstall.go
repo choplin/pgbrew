@@ -26,7 +26,7 @@ func DoUninstall(c *cli.Context) {
 	}
 }
 
-func uninstallCompletion(c *cli.Context) {
+func UninstallCompletion(c *cli.Context) {
 	versions := AllVersions()
 	for _, v := range versions {
 		fmt.Println(v.Name)

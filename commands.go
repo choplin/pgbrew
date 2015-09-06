@@ -110,7 +110,7 @@ var uninstallCommand = cli.Command{
 	Name:         "uninstall",
 	Usage:        "Uninstall a specified version",
 	Action:       DoUninstall,
-	BashComplete: uninstallCompletion,
+	BashComplete: UninstallCompletion,
 }
 
 var currentCommand = cli.Command{
@@ -131,7 +131,7 @@ var currentCommand = cli.Command{
 
 var initdbCommand = cli.Command{
 	Name:  "initdb",
-	Usage: "execute initdb to create a new cluster",
+	Usage: "Execute initdb to create a new cluster",
 	Flags: []cli.Flag{
 		cli.StringFlag{
 			Name:  "name,n",
