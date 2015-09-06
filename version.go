@@ -9,7 +9,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
-const versionFileName = "version"
+const versionExtraInfoFile = ".pgbrew_info"
 
 // Version represents each installed version.
 type Version struct {
@@ -31,7 +31,7 @@ func NewVersion(name string) (*Version, error) {
 		return nil, fmt.Errorf("%s is not installed", name)
 	}
 
-	if err := version.readVersionFile(); err != nil {
+	if err := version.readExtraInfoFile(); err != nil {
 		return nil, err
 	}
 
@@ -55,8 +55,8 @@ func AllVersions() []*Version {
 	return versions
 }
 
-func (v *Version) WriteVersionFile() error {
-	path := v.VersionFilePath()
+func (v *Version) WriteExtraInfoFile() error {
+	path := v.ExtraInfoFilePath()
 	str := v.Hash + "\t" + v.GitRef
 	return ioutil.WriteFile(path, []byte(str), 0644)
 }
@@ -65,8 +65,8 @@ func (v *Version) Path() string {
 	return filepath.Join(installBase, v.Name)
 }
 
-func (v *Version) VersionFilePath() string {
-	return filepath.Join(v.Path(), versionFileName)
+func (v *Version) ExtraInfoFilePath() string {
+	return filepath.Join(v.Path(), versionExtraInfoFile)
 }
 
 func (v *Version) Detail() (*VersionDetail, error) {
@@ -86,8 +86,8 @@ func (v *Version) Detail() (*VersionDetail, error) {
 	}, nil
 }
 
-func (v *Version) readVersionFile() error {
-	path := v.VersionFilePath()
+func (v *Version) readExtraInfoFile() error {
+	path := v.ExtraInfoFilePath()
 	out, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err

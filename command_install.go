@@ -16,20 +16,20 @@ import (
 func DoInstall(c *cli.Context) {
 	args := c.Args()
 	if len(args) != 1 {
-		showHelpAndExit(c, "<version> must be specified")
+		showHelpAndExit(c, "<tag|branch|commit> must be specified")
 	}
-	version := args[0]
+	gitRef := args[0]
 
 	debug := c.Bool("debug")
 	name := c.String("name")
 	if name == "" {
-		name = defaultName(version, debug)
+		name = defaultName(gitRef, debug)
 	}
 	options := c.String("options")
 	installPath := filepath.Join(installBase, name)
 	parallel := c.Bool("parallel")
 
-	hash := doCheckout(version)
+	hash := doCheckout(gitRef)
 
 	configure(installPath, options, debug)
 
@@ -37,7 +37,7 @@ func DoInstall(c *cli.Context) {
 
 	makeInstall(parallel)
 
-	writeVersionFile(name, version, hash)
+	WriteExtraInfoFile(name, gitRef, hash)
 }
 
 func InstallCompletion(c *cli.Context) {
@@ -54,17 +54,17 @@ func InstallCompletion(c *cli.Context) {
 	}
 }
 
-func doCheckout(version string) string {
-	log.WithField("version", version).Info("git checkout")
+func doCheckout(gitRef string) string {
+	log.WithField("git ref", gitRef).Info("git checkout")
 
 	repo, err := git.NewRepository(localRepository)
 	if err != nil {
 		log.WithField("err", err).Fatal("failed to initialize local reporitory")
 	}
 
-	if out, err := repo.Checkout(version); err != nil {
+	if out, err := repo.Checkout(gitRef); err != nil {
 		log.WithFields(log.Fields{
-			"version": version,
+			"git ref": gitRef,
 			"err":     err.Error(),
 			"out":     out,
 		}).Fatal("failed to checkout")
@@ -119,21 +119,21 @@ func makeClean() {
 	}
 }
 
-func writeVersionFile(name string, version string, hash string) {
+func WriteExtraInfoFile(name string, gitRef string, hash string) {
 	installedVersion := Version{
 		Name:   name,
-		GitRef: version,
+		GitRef: gitRef,
 		Hash:   hash,
 	}
 
 	log.WithFields(log.Fields{
-		"path":    installedVersion.VersionFilePath(),
-		"version": version,
+		"path":    installedVersion.ExtraInfoFilePath(),
+		"git ref": gitRef,
 		"hash":    hash,
-	}).Info("write version file")
+	}).Info("write an extra info file")
 
-	if err := installedVersion.WriteVersionFile(); err != nil {
-		log.WithField("err", err).Fatal("failed to write version file")
+	if err := installedVersion.WriteExtraInfoFile(); err != nil {
+		log.WithField("err", err).Fatal("failed to write an extra info file")
 	}
 }
 
@@ -155,13 +155,13 @@ func configureCommand(path string, options string, debug bool) *exec.Cmd {
 	return cmd
 }
 
-func defaultName(version string, debug bool) string {
+func defaultName(gitRef string, debug bool) string {
 	var name string
-	if strings.HasPrefix(version, "REL") {
-		s := strings.Split(version[3:], "_")
+	if strings.HasPrefix(gitRef, "REL") {
+		s := strings.Split(gitRef[3:], "_")
 		name = fmt.Sprintf("%s.%s.%s", s[0], s[1], s[2])
 	} else {
-		name = version
+		name = gitRef
 	}
 	if debug {
 		name += "-debug"

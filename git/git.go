@@ -62,8 +62,8 @@ func (r *repository) Tags() ([]string, error) {
 	return tags, nil
 }
 
-func (r *repository) Checkout(treeish string) (string, error) {
-	cmd := r.gitCommand("checkout", "-f", "-q", treeish)
+func (r *repository) Checkout(gitRef string) (string, error) {
+	cmd := r.gitCommand("checkout", "-f", "-q", gitRef)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		return string(out), err
 	}

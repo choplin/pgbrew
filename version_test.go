@@ -45,10 +45,10 @@ func TestVersion_Path(t *testing.T) {
 
 func TestVersion_VersionFilePath(t *testing.T) {
 	version, _ := NewVersion("9.4.4")
-	path := version.VersionFilePath()
-	want := filepath.Join(installBase, "9.4.4", versionFileName)
+	path := version.ExtraInfoFilePath()
+	want := filepath.Join(installBase, "9.4.4", versionExtraInfoFile)
 	if path != want {
-		t.Errorf("Version.VersionFilePath() returned a wrong path. got %s, want %s", path, want)
+		t.Errorf("Version.ExtraInfoFilePath() returned a wrong path. got %s, want %s", path, want)
 	}
 }
 
