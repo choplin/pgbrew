@@ -11,13 +11,14 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
-type JsonListEntry struct {
+type Row struct {
 	Name             string   `json:"name"`
 	Version          string   `json:"version"`
 	GitRef           string   `json:"git-ref,omitempty"`
 	Hash             string   `json:"hash,omitempty"`
 	Path             string   `json:"path,omitempty"`
 	ConfigureOptions []string `json:"configureOptions,omitempty"`
+	detail           bool
 }
 
 func DoList(c *cli.Context) {
@@ -52,7 +53,7 @@ func prettyList(header []string, versions []*Version, detail bool) {
 
 	for _, v := range versions {
 		row := buildRow(v, detail)
-		table.Append(row)
+		table.Append(row.toStringSlice())
 	}
 	table.Render()
 }
@@ -61,36 +62,26 @@ func plainList(header []string, versions []*Version, detail bool) {
 	fmt.Println(strings.Join(header, "\t"))
 	for _, v := range versions {
 		row := buildRow(v, detail)
-		fmt.Println(strings.Join(row, "\t"))
+		fmt.Println(strings.Join(row.toStringSlice(), "\t"))
 	}
 }
 
 func jsonList(versions []*Version, detail bool) {
-	out := []JsonListEntry{}
+	out := []*Row{}
 	for _, v := range versions {
 		row := buildRow(v, detail)
-		entry := JsonListEntry{
-			Name:    row[0],
-			Version: row[1],
-		}
-		if detail {
-			entry.GitRef = row[2]
-			entry.Hash = row[3]
-			entry.Path = row[4]
-			entry.ConfigureOptions = strings.Split(row[5], " ")
-		}
-		out = append(out, entry)
+		out = append(out, row)
 	}
 	enc := json.NewEncoder(os.Stdout)
 	enc.Encode(out)
 }
 
-func buildRow(v *Version, detail bool) []string {
+func buildRow(v *Version, detail bool) *Row {
 	version, err := v.PgVersion()
 	if err != nil {
 		log.WithField("err", err).Fatal("failed get postgresql version")
 	}
-	row := []string{v.Name, version}
+	row := &Row{Name: v.Name, Version: version, detail: detail}
 	if detail {
 		d, err := v.Detail()
 		if err != nil {
@@ -99,10 +90,28 @@ func buildRow(v *Version, detail bool) []string {
 				"err":     err.Error(),
 			}).Fatal("failed to get detailed information")
 		}
-		row = append(row, v.GitRef)
-		row = append(row, v.Hash)
-		row = append(row, d.Path)
-		row = append(row, strings.Join(d.ConfigureOptions, " "))
+		row.GitRef = v.GitRef
+		row.Hash = v.Hash
+		row.Path = d.Path
+		row.ConfigureOptions = d.ConfigureOptions
 	}
 	return row
+}
+
+func (r *Row) toStringSlice() []string {
+	if !r.detail {
+		return []string{
+			r.Name,
+			r.Version,
+		}
+	} else {
+		return []string{
+			r.Name,
+			r.Version,
+			r.GitRef,
+			r.Hash,
+			r.Path,
+			strings.Join(r.ConfigureOptions, " "),
+		}
+	}
 }
