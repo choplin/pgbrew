@@ -8,7 +8,7 @@ var commandHelps = map[string]string{
 	"init":      "[-p PATH]",
 	"clone":     "[-o OPTIONS]",
 	"available": "",
-	"install":   "[-n NAME] [-d] [-o OPTOINS] [-p] <tag|branch|commint>",
+	"install":   "[-n NAME] [-d] [-o OPTOINS] [-p] <tag|branch|commit>",
 	"list":      "[-f pretty|plain|json] [-d]",
 	"uninstall": "<version>",
 	"current":   "[-u] | <version>",
