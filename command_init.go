@@ -22,7 +22,13 @@ func DoInit(c *cli.Context) {
 		basePath = filepath.Join(homeDirectory, ".pgbrew")
 	}
 
-	dirs := []string{filepath.Dir(configFilePath), basePath}
+	dirs := []string{
+		filepath.Dir(configFilePath),
+		basePath,
+		localRepository,
+		installBase,
+		clusterBase,
+	}
 	for _, d := range dirs {
 		if !exists(d) {
 			log.WithField("path", d).Debug("create a directory")
