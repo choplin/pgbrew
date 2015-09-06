@@ -31,6 +31,7 @@ var (
 	baseDirectory   string
 	localRepository string
 	installBase     string
+	clusterBase     string
 	currentLink     string
 )
 
@@ -51,6 +52,7 @@ func init() {
 		baseDirectory = config.BasePath
 		localRepository = filepath.Join(baseDirectory, "repository")
 		installBase = filepath.Join(baseDirectory, "versions")
+		clusterBase = filepath.Join(baseDirectory, "clusters")
 		currentLink = filepath.Join(baseDirectory, "current")
 	}
 }

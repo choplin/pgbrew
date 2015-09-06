@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -71,7 +70,8 @@ func (v *Version) VersionFilePath() string {
 }
 
 func (v *Version) Detail() (*VersionDetail, error) {
-	configureOut, err := v.pgConfig("--configure")
+	pg := &Postgres{v}
+	configureOut, err := pg.PgConfig("--configure")
 	if err != nil {
 		return nil, err
 	}
@@ -98,15 +98,4 @@ func (v *Version) readVersionFile() error {
 	v.Version = info[1]
 
 	return nil
-}
-
-func (v *Version) pgConfig(option string) (string, error) {
-	pgConfig := filepath.Join(v.Path(), "bin", "pg_config")
-	cmd := exec.Command(pgConfig, option)
-	out, err := cmd.Output()
-	if err != nil {
-		return "", err
-	}
-	return strings.TrimRight(string(out), "\n"), nil
-
 }

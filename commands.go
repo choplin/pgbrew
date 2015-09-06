@@ -12,6 +12,7 @@ var commandHelps = map[string]string{
 	"list":      "[-f pretty|plain|json] [-d]",
 	"uninstall": "<version>",
 	"current":   "[-u] | <version>",
+	"initdb":    "<version> <name> [-o OPTIONS]",
 }
 
 var commands = []cli.Command{
@@ -23,6 +24,7 @@ var commands = []cli.Command{
 	listCommand,
 	uninstallCommand,
 	currentCommand,
+	initdbCommand,
 }
 
 var initCommand = cli.Command{
@@ -125,4 +127,21 @@ var currentCommand = cli.Command{
 	},
 	Action:       DoCurrent,
 	BashComplete: CurrentCompletion,
+}
+
+var initdbCommand = cli.Command{
+	Name:  "initdb",
+	Usage: "execute initdb to create a new cluster",
+	Flags: []cli.Flag{
+		cli.StringFlag{
+			Name:  "name,n",
+			Usage: "A name for this cluster. A specified <version> is used as a default value.",
+		},
+		cli.StringFlag{
+			Name:  "options,o",
+			Usage: "Options passed to configure",
+		},
+	},
+	Action:       DoInitdb,
+	BashComplete: InitdbCompletion,
 }
