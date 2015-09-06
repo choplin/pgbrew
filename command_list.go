@@ -37,7 +37,7 @@ func DoList(c *cli.Context) {
 	}
 }
 
-func prettyList(versions []Version, detail bool) {
+func prettyList(versions []*Version, detail bool) {
 	table := tablewriter.NewWriter(os.Stdout)
 	header := []string{"Name", "Version"}
 	if detail {
@@ -66,7 +66,7 @@ func prettyList(versions []Version, detail bool) {
 	table.Render()
 }
 
-func plainList(versions []Version, detail bool) {
+func plainList(versions []*Version, detail bool) {
 	for _, v := range versions {
 		row := []string{v.Name, v.Version}
 		if detail {
@@ -85,7 +85,7 @@ func plainList(versions []Version, detail bool) {
 	}
 }
 
-func jsonList(versions []Version, detail bool) {
+func jsonList(versions []*Version, detail bool) {
 	out := []JsonListEntry{}
 	for _, v := range versions {
 		entry := JsonListEntry{

@@ -38,19 +38,19 @@ func NewVersion(name string) (*Version, error) {
 	return version, nil
 }
 
-func AllVersions() []Version {
+func AllVersions() []*Version {
 	fis, err := ioutil.ReadDir(installBase)
 	if err != nil {
 		log.WithField("err", err).Fatal("failed to get all installed versions")
 	}
 
-	versions := make([]Version, len(fis))
+	versions := make([]*Version, len(fis))
 	for i, fi := range fis {
 		v, err := NewVersion(fi.Name())
 		if err != nil {
 			log.WithField("err", err).Fatal("failed to get all installed versions")
 		}
-		versions[i] = *v
+		versions[i] = v
 	}
 	return versions
 }
