@@ -145,3 +145,54 @@ var initdbCommand = cli.Command{
 	Action:       DoInitdb,
 	BashComplete: InitdbCompletion,
 }
+
+var clusterCommands = []cli.Command{
+	clusterRemoveCommand,
+	clusterListCommand,
+	clusterEnvCommand,
+	clusterStartCommand,
+	clusterStopCommand,
+	clusterPSQLCommand,
+}
+
+var clusterCommand = cli.Command{
+	Name:        "cluster",
+	Usage:       "Manage PostgreSQL clusters",
+	Subcommands: clusterCommands,
+}
+
+var clusterRemoveCommand = cli.Command{
+	Name:   "remove",
+	Usage:  "Remove a specified cluster",
+	Action: DoClusterRemove,
+}
+
+var clusterListCommand = cli.Command{
+	Name:   "list",
+	Usage:  "List clusters",
+	Action: DoClusterList,
+}
+
+var clusterEnvCommand = cli.Command{
+	Name:   "env",
+	Usage:  "Show shell scripts to enable a specified cluster",
+	Action: DoClusterEnv,
+}
+
+var clusterStartCommand = cli.Command{
+	Name:   "start",
+	Usage:  "Start a postgresql process with a specified cluster",
+	Action: DoClusterStart,
+}
+
+var clusterStopCommand = cli.Command{
+	Name:   "stop",
+	Usage:  "Stop a postgresql process with a specified cluster",
+	Action: DoClusterStop,
+}
+
+var clusterPSQLCommand = cli.Command{
+	Name:   "psql",
+	Usage:  "Run psql for a specified cluster",
+	Action: DoClusterPSQL,
+}
