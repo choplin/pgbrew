@@ -9,16 +9,14 @@ import (
 	"github.com/choplin/pgbrew/util"
 )
 
-func Clone(path string, url string, options string) error {
+func Clone(path string, url string, options []string) error {
 	if exists(path) {
 		return errors.New("local reporitory already exists")
 	}
 
 	args := []string{"clone"}
-	if options != "" {
-		for _, o := range strings.Split(options, " ") {
-			args = append(args, o)
-		}
+	for _, o := range options {
+		args = append(args, o)
 	}
 	args = append(args, url)
 	args = append(args, path)

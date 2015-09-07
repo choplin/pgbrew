@@ -6,13 +6,13 @@ var tasks = []string{"cook", "clean", "laundry", "eat", "sleep", "code"}
 
 var commandHelps = map[string]string{
 	"init":      "[-p PATH]",
-	"clone":     "[-o OPTIONS]",
+	"clone":     "[--] [<git clone option>...]",
 	"available": "",
-	"install":   "[-n NAME] [-d] [-o OPTOINS] [-p] <tag|branch|commit>",
+	"install":   "[-n NAME] [-d] [-p] <tag|branch|commit> <configure option>...]",
 	"list":      "[-f pretty|plain|json] [-d]",
 	"uninstall": "<version>",
 	"current":   "[-u] | <version>",
-	"initdb":    "<version> <name> [-o OPTIONS]",
+	"initdb":    "[-n NAME] <version> [<initdb option>...]",
 }
 
 var commands = []cli.Command{
@@ -46,12 +46,6 @@ var cloneCommand = cli.Command{
 	Name:   "clone",
 	Usage:  "Clone PostgreSQL git repository into a local directory",
 	Action: DoClone,
-	Flags: []cli.Flag{
-		cli.StringFlag{
-			Name:  "options,o",
-			Usage: "Options passed to git clone",
-		},
-	},
 }
 
 var updateCommand = cli.Command{
@@ -77,10 +71,6 @@ var installCommand = cli.Command{
 		cli.BoolFlag{
 			Name:  "debug,d",
 			Usage: "Enable debug build swith (i.e. --enable-debug --enable-cassert)",
-		},
-		cli.StringFlag{
-			Name:  "options,o",
-			Usage: "Options passed to configure",
 		},
 		cli.BoolFlag{
 			Name:  "parallel,p",
@@ -137,10 +127,6 @@ var initdbCommand = cli.Command{
 		cli.StringFlag{
 			Name:  "name,n",
 			Usage: "A name for this cluster. A specified <version> is used as a default value.",
-		},
-		cli.StringFlag{
-			Name:  "options,o",
-			Usage: "Options passed to configure",
 		},
 	},
 	Action:       DoInitdb,

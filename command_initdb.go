@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"path/filepath"
-	"strings"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
@@ -11,7 +10,7 @@ import (
 
 func DoInitdb(c *cli.Context) {
 	args := c.Args()
-	if len(args) != 1 {
+	if len(args) == 0 {
 		showHelpAndExit(c, "<version> must be specified")
 	}
 
@@ -30,16 +29,14 @@ func DoInitdb(c *cli.Context) {
 		log.WithField("name", name).Fatal("cluster already exists")
 	}
 
-	options := c.String("options")
-
 	initdbArgs := []string{"-D", path}
-	if options != "" {
-		for _, o := range strings.Split(options, " ") {
-			initdbArgs = append(initdbArgs, o)
+	if len(args) > 1 {
+		for _, a := range args[1:] {
+			initdbArgs = append(initdbArgs, a)
 		}
 	}
 
-	log.WithField("options", initdbArgs).Info("initdb")
+	log.WithField("initdb options", initdbArgs).Info("initdb")
 	if err := pg.Initdb(initdbArgs); err != nil {
 		log.WithField("err", err).Fatal("failed to execute initdb")
 	}

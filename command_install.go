@@ -15,23 +15,28 @@ import (
 
 func DoInstall(c *cli.Context) {
 	args := c.Args()
-	if len(args) != 1 {
+	if len(args) == 0 {
 		showHelpAndExit(c, "<tag|branch|commit> must be specified")
 	}
 	gitRef := args[0]
+	var configureOptions []string
+	if len(args) > 1 {
+		configureOptions = args[1:]
+	} else {
+		configureOptions = []string{}
+	}
 
 	debug := c.Bool("debug")
 	name := c.String("name")
 	if name == "" {
 		name = defaultName(gitRef, debug)
 	}
-	options := c.String("options")
 	installPath := filepath.Join(installBase, name)
 	parallel := c.Bool("parallel")
 
 	hash := doCheckout(gitRef)
 
-	configure(installPath, options, debug)
+	configure(installPath, configureOptions, debug)
 
 	makeClean()
 
@@ -81,10 +86,10 @@ func doCheckout(gitRef string) string {
 	return hash
 }
 
-func configure(installPath string, options string, debug bool) {
+func configure(installPath string, options []string, debug bool) {
 	cmd := configureCommand(installPath, options, debug)
 
-	log.WithField("options", cmd.Args[1:]).Info("configure")
+	log.WithField("configure options", cmd.Args[1:]).Info("configure")
 
 	err := util.RunCommandWithDebugLog(cmd)
 	if err != nil {
@@ -137,12 +142,10 @@ func WriteExtraInfoFile(name string, gitRef string, hash string) {
 	}
 }
 
-func configureCommand(path string, options string, debug bool) *exec.Cmd {
+func configureCommand(path string, options []string, debug bool) *exec.Cmd {
 	args := []string{"--prefix", path}
-	if options != "" {
-		for _, o := range strings.Split(options, " ") {
-			args = append(args, o)
-		}
+	for _, o := range options {
+		args = append(args, o)
 	}
 	if debug {
 		args = append(args, "--enable-debug")
