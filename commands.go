@@ -21,6 +21,7 @@ var clusterSubcommandHelps = map[string]string{
 	"psql":   "<cluster> [<psql options>...]",
 	"env":    "<cluster>",
 	"remove": "<cluster>",
+	"edit":   "<cluster>",
 }
 
 var commands = []cli.Command{
@@ -131,6 +132,7 @@ var clusterCommands = []cli.Command{
 	clusterStartCommand,
 	clusterStopCommand,
 	clusterPsqlCommand,
+	clusterEditCommand,
 }
 
 var clusterCommand = cli.Command{
@@ -196,4 +198,11 @@ var clusterPsqlCommand = cli.Command{
 	Action:          DoClusterPsql,
 	BashComplete:    ClusterPsqlCompletion,
 	SkipFlagParsing: true,
+}
+
+var clusterEditCommand = cli.Command{
+	Name:         "edit",
+	Usage:        "Edit files in a cluster directory",
+	Action:       DoClusterEdit,
+	BashComplete: ClusterEditCompletion,
 }
