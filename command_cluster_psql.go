@@ -33,8 +33,7 @@ func DoClusterPsql(c *cli.Context) {
 }
 
 func ClusterPsqlCompletion(c *cli.Context) {
-	args := c.Args()
-	if len(args) == 0 {
+	if len(c.Args()) == 0 {
 		for _, c := range AllClusters() {
 			fmt.Println(c.Name)
 		}

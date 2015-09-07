@@ -46,16 +46,18 @@ func DoInstall(c *cli.Context) {
 }
 
 func InstallCompletion(c *cli.Context) {
-	repo, err := git.NewRepository(localRepository)
-	if err != nil {
-		log.WithField("err", err).Fatal("failed to initialize local reporitory")
-	}
-	tags, err := repo.Tags()
-	if err != nil {
-		log.WithField("err", err).Fatal("failed to get tags")
-	}
-	for _, t := range tags {
-		fmt.Println(t)
+	if len(c.Args()) == 0 {
+		repo, err := git.NewRepository(localRepository)
+		if err != nil {
+			log.WithField("err", err).Fatal("failed to initialize local reporitory")
+		}
+		tags, err := repo.Tags()
+		if err != nil {
+			log.WithField("err", err).Fatal("failed to get tags")
+		}
+		for _, t := range tags {
+			fmt.Println(t)
+		}
 	}
 }
 

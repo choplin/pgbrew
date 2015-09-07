@@ -27,8 +27,10 @@ func DoUninstall(c *cli.Context) {
 }
 
 func UninstallCompletion(c *cli.Context) {
-	versions := AllVersions()
-	for _, v := range versions {
-		fmt.Println(v.Name)
+	if len(c.Args()) == 0 {
+		versions := AllVersions()
+		for _, v := range versions {
+			fmt.Println(v.Name)
+		}
 	}
 }

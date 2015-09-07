@@ -38,7 +38,9 @@ func DoClusterStart(c *cli.Context) {
 }
 
 func ClusterStartCompletion(c *cli.Context) {
-	for _, c := range AllClusters() {
-		fmt.Println(c.Name)
+	if len(c.Args()) == 0 {
+		for _, c := range AllClusters() {
+			fmt.Println(c.Name)
+		}
 	}
 }
