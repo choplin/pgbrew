@@ -4,14 +4,17 @@ import (
 	"fmt"
 	"io/ioutil"
 	"path/filepath"
+	"strconv"
 
 	log "github.com/Sirupsen/logrus"
 )
 
 const clusterExtraInfoFile = ".pgenv_info"
+const clusterPortFile = ".pgenv_port"
 
 type Cluster struct {
 	Name string
+	Port int
 	pg   *Postgres
 }
 
@@ -22,6 +25,9 @@ func NewCluster(name string) (*Cluster, error) {
 	}
 
 	if err := c.readExtraInfoFile(); err != nil {
+		return nil, err
+	}
+	if err := c.readPortFile(); err != nil {
 		return nil, err
 	}
 	return c, nil
@@ -45,7 +51,14 @@ func AllClusters() []*Cluster {
 }
 
 func (c *Cluster) Start(port int) error {
-	return c.pg.Start(c.Path(), port)
+	if err := c.pg.Start(c.Path(), port); err != nil {
+		return err
+	}
+	c.Port = port
+	if err := c.writePortFile(); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *Cluster) WriteExtraInfoFile() error {
@@ -80,5 +93,33 @@ func (c *Cluster) readExtraInfoFile() error {
 	}
 
 	c.pg = pg
+	return nil
+}
+
+func (c *Cluster) portFilePath() string {
+	return filepath.Join(c.Path(), clusterPortFile)
+}
+
+func (c *Cluster) writePortFile() error {
+	path := c.portFilePath()
+	str := strconv.Itoa(c.Port)
+	return ioutil.WriteFile(path, []byte(str), 0600)
+}
+
+func (c *Cluster) readPortFile() error {
+	if !c.IsRunning() {
+		return nil
+	}
+
+	path := c.portFilePath()
+	out, err := ioutil.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	c.Port, err = strconv.Atoi(string(out))
+	if err != nil {
+		return err
+	}
 	return nil
 }
