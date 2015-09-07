@@ -6,7 +6,6 @@ import (
 	"path/filepath"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/choplin/pgbrew/util"
 )
 
 const clusterExtraInfoFile = ".pgbrew_info"
@@ -45,13 +44,8 @@ func AllClusters() []*Cluster {
 	return clusters
 }
 
-func (c *Cluster) Start() error {
-	port, err := util.FindFreePort()
-	if err != nil {
-		log.WithField("err", err).Fatal("failed to find a free port")
-	}
-
-	return c.pg.Start(port)
+func (c *Cluster) Start(port int) error {
+	return c.pg.Start(c.Path(), port)
 }
 
 func (c *Cluster) WriteExtraInfoFile() error {
@@ -66,6 +60,11 @@ func (c *Cluster) Path() string {
 
 func (c *Cluster) ExtraInfoFilePath() string {
 	return filepath.Join(c.Path(), clusterExtraInfoFile)
+}
+
+func (c *Cluster) IsRunning() bool {
+	pidFile := filepath.Join(c.Path(), "postmaster.pid")
+	return exists(pidFile)
 }
 
 func (c *Cluster) readExtraInfoFile() error {

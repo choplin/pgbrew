@@ -31,9 +31,9 @@ func (p *Postgres) Initdb(args []string) error {
 	return util.RunCommandWithDebugLog(cmd)
 }
 
-func (p *Postgres) Start(port int) error {
+func (p *Postgres) Start(pgdata string, port int) error {
 	bin := p.binPath("pg_ctl")
-	args := []string{"start"}
+	args := []string{"start", "-D", pgdata}
 	cmd := exec.Command(bin, args...)
 
 	cmd.Env = []string{

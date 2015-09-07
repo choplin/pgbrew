@@ -178,9 +178,10 @@ var clusterEnvCommand = cli.Command{
 }
 
 var clusterStartCommand = cli.Command{
-	Name:   "start",
-	Usage:  "Start a postgresql process with a specified cluster",
-	Action: DoClusterStart,
+	Name:         "start",
+	Usage:        "Start a postgresql process with a specified cluster",
+	Action:       DoClusterStart,
+	BashComplete: ClusterStartCompletion,
 }
 
 var clusterStopCommand = cli.Command{
