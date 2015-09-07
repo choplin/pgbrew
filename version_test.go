@@ -60,7 +60,7 @@ func TestVersion_Detail(t *testing.T) {
 	}
 	want := &VersionDetail{
 		Path:             version.Path(),
-		ConfigureOptions: []string{"--prefix=/root/.pgbrew/versions/9.4.4"},
+		ConfigureOptions: []string{"--prefix=/root/.pgenv/versions/9.4.4"},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Version.Detail() returned a wrong result. got %s, want %s", got, want)

@@ -3,7 +3,7 @@ package main
 func ExampleAvailableCommand() {
 	app := makeTestEnv()
 
-	app.Run([]string{"pgbrew", "available"})
+	app.Run([]string{"pgenv", "available"})
 	// Output:
 	// Available versions:
 	// 	PG95-1_01

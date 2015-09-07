@@ -15,11 +15,11 @@ func DoInit(c *cli.Context) {
 		os.Exit(0)
 	}
 
-	log.Info("initialize pgbrew")
+	log.Info("initialize pgenv")
 
 	basePath := c.String("path")
 	if basePath == "" {
-		basePath = filepath.Join(homeDirectory, ".pgbrew")
+		basePath = filepath.Join(homeDirectory, ".pgenv")
 	}
 
 	dirs := []string{

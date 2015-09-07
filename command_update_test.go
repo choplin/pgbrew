@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"github.com/choplin/pgbrew/git"
+	"github.com/choplin/pgenv/git"
 )
 
 func TestUpdateCommand(t *testing.T) {
@@ -22,7 +22,7 @@ func TestUpdateCommand(t *testing.T) {
 	}
 
 	app := makeTestEnv()
-	app.Run([]string{"pgbrew", "update"})
+	app.Run([]string{"pgenv", "update"})
 
 	updated, err := repo.Hash("origin/HEAD")
 	if err != nil {

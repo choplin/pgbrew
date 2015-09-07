@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/choplin/pgbrew/git"
-	"github.com/choplin/pgbrew/util"
+	"github.com/choplin/pgenv/git"
+	"github.com/choplin/pgenv/util"
 	"github.com/codegangsta/cli"
 )
 

@@ -8,7 +8,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
-const clusterExtraInfoFile = ".pgbrew_info"
+const clusterExtraInfoFile = ".pgenv_info"
 
 type Cluster struct {
 	Name string

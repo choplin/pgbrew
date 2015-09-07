@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/choplin/pgbrew/util"
+	"github.com/choplin/pgenv/util"
 	"github.com/codegangsta/cli"
 )
 

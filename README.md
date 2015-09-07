@@ -1,6 +1,6 @@
-# PGBREW - PostgreSQL Version Manager
+# PGENV - PostgreSQL Version Manager
 
-[![Build Status](https://travis-ci.org/choplin/pgbrew.svg)](https://travis-ci.org/choplin/pgbrew)
+[![Build Status](https://travis-ci.org/choplin/pgenv.svg)](https://travis-ci.org/choplin/pgenv)
 
 TBD
 

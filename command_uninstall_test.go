@@ -17,7 +17,7 @@ func TestUninstallCommand(t *testing.T) {
 	}
 
 	app := makeTestEnv()
-	app.Run([]string{"pgbrew", "uninstall", target})
+	app.Run([]string{"pgenv", "uninstall", target})
 
 	if exists(dest) {
 		t.Errorf("found uninstalled version %s", dest)

@@ -11,14 +11,14 @@ import (
 )
 
 const (
-	APP_NAME    = "pgbrew"
+	APP_NAME    = "pgenv"
 	APP_USAGE   = "Manage PostgreSQL environment"
 	APP_VERSION = "0.1-SNAPSHOT"
 	APP_AUTHOR  = "Akihiro Okuno"
 	APP_EMAIL   = "choplin.choplin@gmail.com"
 )
 
-const configFilePathSuffix = ".pgbrew/config.json"
+const configFilePathSuffix = ".pgenv/config.json"
 
 var homeDirectory string
 
@@ -82,7 +82,7 @@ func makeApp() *cli.App {
 		args := c.Args()
 		if len(args) > 0 && args[0] != "init" {
 			if config == nil {
-				log.Fatal("pgbrew is not initilized. Run `pgbrew init` first.")
+				log.Fatal("pgenv is not initilized. Run `pgenv init` first.")
 			}
 		}
 
@@ -96,7 +96,7 @@ func makeApp() *cli.App {
    {{.FullName}} - {{.Usage}}
 
 USAGE:
-   pgbrew {{.FullName}} ` + help + `{{if .Description}}
+   pgenv {{.FullName}} ` + help + `{{if .Description}}
 
 DESCRIPTION:
    {{.Description}}{{end}}{{if .Flags}}

@@ -6,7 +6,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
 
-	"github.com/choplin/pgbrew/git"
+	"github.com/choplin/pgenv/git"
 )
 
 func DoAvailable(c *cli.Context) {

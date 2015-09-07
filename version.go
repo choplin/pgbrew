@@ -9,7 +9,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
-const versionExtraInfoFile = ".pgbrew_info"
+const versionExtraInfoFile = ".pgenv_info"
 
 // Version represents each installed version.
 type Version struct {

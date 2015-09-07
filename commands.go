@@ -30,14 +30,14 @@ var commands = []cli.Command{
 
 var initCommand = cli.Command{
 	Name:  "init",
-	Usage: "Initialize pgbrew environment",
-	Description: `During initialization process, a config file will be created at ~/.pgbrew/config.json.
-   This path is not related to a pgbrew base directory, and not configurable.`,
+	Usage: "Initialize pgenv environment",
+	Description: `During initialization process, a config file will be created at ~/.pgenv/config.json.
+   This path is not related to a pgenv base directory, and not configurable.`,
 	Action: DoInit,
 	Flags: []cli.Flag{
 		cli.StringFlag{
 			Name:  "path,p",
-			Usage: "Path of pgbrew base directory. default: ~/.pgbrew",
+			Usage: "Path of pgenv base directory. default: ~/.pgenv",
 		},
 	},
 }
@@ -185,9 +185,10 @@ var clusterStartCommand = cli.Command{
 }
 
 var clusterStopCommand = cli.Command{
-	Name:   "stop",
-	Usage:  "Stop a postgresql process with a specified cluster",
-	Action: DoClusterStop,
+	Name:         "stop",
+	Usage:        "Stop a postgresql process with a specified cluster",
+	Action:       DoClusterStop,
+	BashComplete: ClusterStopCompletion,
 }
 
 var clusterPSQLCommand = cli.Command{

@@ -9,7 +9,7 @@ import (
 func TestSetCurrentVersion(t *testing.T) {
 	app := makeTestEnv()
 	target := "9.4.4"
-	app.Run([]string{"pgbrew", "current", target})
+	app.Run([]string{"pgenv", "current", target})
 
 	fi, err := os.Lstat(currentLink)
 	if err != nil {
@@ -35,9 +35,9 @@ func ExampleCurrentCommand_showCurrentLink() {
 	app := makeTestEnv()
 
 	target := "9.4.4"
-	app.Run([]string{"pgbrew", "current", target})
+	app.Run([]string{"pgenv", "current", target})
 
-	app.Run([]string{"pgbrew", "current"})
+	app.Run([]string{"pgenv", "current"})
 	// Output: 9.4.4
 }
 
@@ -45,12 +45,12 @@ func TestUnsetCurrentVersion(t *testing.T) {
 	app := makeTestEnv()
 
 	target := "9.4.4"
-	app.Run([]string{"pgbrew", "current", target})
+	app.Run([]string{"pgenv", "current", target})
 	if !exists(currentLink) {
 		t.Fatal("failed to set a current version")
 	}
 
-	app.Run([]string{"pgbrew", "current", "-u"})
+	app.Run([]string{"pgenv", "current", "-u"})
 	if exists(currentLink) {
 		t.Error("failed to unset a current version")
 	}

@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/choplin/pgbrew/util"
+	"github.com/choplin/pgenv/util"
 )
 
 func Clone(path string, url string, options []string) error {
