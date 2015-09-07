@@ -15,6 +15,15 @@ var commandHelps = map[string]string{
 	"initdb":    "[-n NAME] <version> [<initdb option>...]",
 }
 
+var clusterSubcommandHelps = map[string]string{
+	"list":   "[-f pretty|plain|json] [-d]",
+	"start":  "<cluster>",
+	"stop":   "<cluster>",
+	"psql":   "<cluster> [<psql options>...]",
+	"env":    "<cluster>",
+	"remove": "<cluster>",
+}
+
 var commands = []cli.Command{
 	initCommand,
 	cloneCommand,
@@ -146,6 +155,13 @@ var clusterCommand = cli.Command{
 	Name:        "cluster",
 	Usage:       "Manage PostgreSQL clusters",
 	Subcommands: clusterCommands,
+	Before: func(c *cli.Context) error {
+		args := c.Args()
+		if len(args) > 0 {
+			updateCommandHelp(args[0], clusterSubcommandHelps)
+		}
+		return nil
+	},
 }
 
 var clusterRemoveCommand = cli.Command{

@@ -91,21 +91,7 @@ func makeApp() *cli.App {
 		}
 
 		if len(args) > 0 {
-			if help, ok := commandHelps[args[0]]; ok {
-				cli.CommandHelpTemplate = `NAME:
-   {{.FullName}} - {{.Usage}}
-
-USAGE:
-   pgenv {{.FullName}} ` + help + `{{if .Description}}
-
-DESCRIPTION:
-   {{.Description}}{{end}}{{if .Flags}}
-
-OPTIONS:
-   {{range .Flags}}{{.}}
-   {{end}}{{ end }}
-`
-			}
+			updateCommandHelp(args[0], commandHelps)
 		}
 
 		return nil
@@ -150,4 +136,22 @@ func showHelpAndExit(c *cli.Context, msg string) {
 func exists(filename string) bool {
 	_, err := os.Lstat(filename)
 	return err == nil
+}
+
+func updateCommandHelp(command string, helps map[string]string) {
+	if help, ok := helps[command]; ok {
+		cli.CommandHelpTemplate = `NAME:
+   {{.FullName}} - {{.Usage}}
+
+USAGE:
+   pgenv {{.FullName}} ` + help + `{{if .Description}}
+
+DESCRIPTION:
+   {{.Description}}{{end}}{{if .Flags}}
+
+OPTIONS:
+   {{range .Flags}}{{.}}
+   {{end}}{{ end }}
+`
+	}
 }
