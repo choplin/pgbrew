@@ -43,6 +43,13 @@ func (p *Postgres) Start(pgdata string, port int) error {
 	return util.RunCommandWithDebugLog(cmd)
 }
 
+func (p *Postgres) Stop(pgdata string) error {
+	bin := p.binPath("pg_ctl")
+	args := []string{"stop", "-D", pgdata}
+	cmd := exec.Command(bin, args...)
+	return util.RunCommandWithDebugLog(cmd)
+}
+
 func (p *Postgres) PgConfig(option string) (string, error) {
 	pgConfig := p.binPath("pg_config")
 	cmd := exec.Command(pgConfig, option)

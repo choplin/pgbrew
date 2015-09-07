@@ -61,6 +61,10 @@ func (c *Cluster) Start(port int) error {
 	return nil
 }
 
+func (c *Cluster) Stop() error {
+	return c.pg.Stop(c.Path())
+}
+
 func (c *Cluster) WriteExtraInfoFile() error {
 	path := c.ExtraInfoFilePath()
 	str := c.Name
