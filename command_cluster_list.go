@@ -13,6 +13,7 @@ import (
 type ClusterRow struct {
 	Name        string `json:"name"`
 	VersionName string `json:"version-name"`
+	State       string `json:"state"`
 	detail      bool
 }
 
@@ -22,7 +23,7 @@ func DoClusterList(c *cli.Context) {
 	format := c.String("format")
 	detail := c.Bool("detail")
 
-	header := []string{"Name", "Version Name"}
+	header := []string{"Name", "Version Name", "State"}
 	if detail {
 	}
 
@@ -68,20 +69,26 @@ func jsonClusterList(clusters []*Cluster, detail bool) {
 }
 
 func buildClusterRow(c *Cluster, detail bool) *ClusterRow {
-	row := &ClusterRow{Name: c.Name, VersionName: c.pg.Version().Name, detail: detail}
+	row := &ClusterRow{
+		Name:        c.Name,
+		VersionName: c.pg.Version().Name,
+		detail:      detail,
+	}
+	if c.IsRunning() {
+		row.State = "running"
+	} else {
+		row.State = "stopped"
+	}
 	return row
 }
 
 func (r *ClusterRow) toStringSlice() []string {
-	if !r.detail {
-		return []string{
-			r.Name,
-			r.VersionName,
-		}
-	} else {
-		return []string{
-			r.Name,
-			r.VersionName,
-		}
+	ret := []string{
+		r.Name,
+		r.VersionName,
+		r.State,
 	}
+	if !r.detail {
+	}
+	return ret
 }
