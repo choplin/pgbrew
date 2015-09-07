@@ -11,7 +11,6 @@ var commandHelps = map[string]string{
 	"install":   "[-n NAME] [-d] [-p] <tag|branch|commit> <configure option>...]",
 	"list":      "[-f pretty|plain|json] [-d]",
 	"uninstall": "<version>",
-	"current":   "[-u] | <version>",
 	"initdb":    "[-n NAME] <version> [<initdb option>...]",
 }
 
@@ -32,7 +31,6 @@ var commands = []cli.Command{
 	installCommand,
 	listCommand,
 	uninstallCommand,
-	currentCommand,
 	initdbCommand,
 	clusterCommand,
 }
@@ -111,22 +109,6 @@ var uninstallCommand = cli.Command{
 	Usage:        "Uninstall a specified version",
 	Action:       DoUninstall,
 	BashComplete: UninstallCompletion,
-}
-
-var currentCommand = cli.Command{
-	Name:  "current",
-	Usage: "Set or show the current version",
-	Description: `If <version> is not specified, display a current version.
-   If -u option is specified, unset a current version.
-   Otherwise, set a specfied version as a current version.`,
-	Flags: []cli.Flag{
-		cli.BoolFlag{
-			Name:  "unset,u",
-			Usage: "Unset a current version",
-		},
-	},
-	Action:       DoCurrent,
-	BashComplete: CurrentCompletion,
 }
 
 var initdbCommand = cli.Command{

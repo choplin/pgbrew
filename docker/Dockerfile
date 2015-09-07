@@ -24,5 +24,4 @@ RUN cd $HOME/.pgenv/repository && \
     echo -n "553e576e05b50f9faffbd3dd721e44fc3746898d\tREL9_3_9" > $HOME/.pgenv/versions/9.3.9-debug/.pgenv_info && \
     make clean
 
-RUN echo -n "{\"base-path\":\"$HOME/.pgenv\"}" > $HOME/.pgenv/config.json && \
-    ln -s $HOME/.pgenv/versions/9.4.4 $HOME/.pgenv/current
+RUN echo -n "{\"base-path\":\"$HOME/.pgenv\"}" > $HOME/.pgenv/config.json
