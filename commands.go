@@ -170,9 +170,10 @@ var clusterListCommand = cli.Command{
 }
 
 var clusterEnvCommand = cli.Command{
-	Name:   "env",
-	Usage:  "Show shell scripts to enable a specified cluster",
-	Action: DoClusterEnv,
+	Name:         "env",
+	Usage:        "Show shell scripts to enable a specified cluster",
+	Action:       DoClusterEnv,
+	BashComplete: ClusterEnvCompletion,
 }
 
 var clusterStartCommand = cli.Command{
