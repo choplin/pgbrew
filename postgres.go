@@ -63,7 +63,6 @@ func (p *Postgres) PgConfig(option string) (string, error) {
 
 func (p *Postgres) Psql(port int, args []string) error {
 	bin := p.binPath("psql")
-	fmt.Println(args)
 	cmd := exec.Command(bin, args...)
 
 	cmd.Stdout = os.Stdout
