@@ -62,7 +62,11 @@ func (c *Cluster) Start(port int) error {
 }
 
 func (c *Cluster) Stop() error {
-	return c.Pg.Stop(c.Path())
+	if err := c.Pg.Stop(c.Path()); err != nil {
+		return err
+	}
+	c.Port = 0
+	return nil
 }
 
 func (c *Cluster) WriteExtraInfoFile() error {
