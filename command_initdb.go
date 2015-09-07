@@ -57,7 +57,7 @@ func InitdbCompletion(c *cli.Context) {
 
 func writeClusterExtraInfoFile(name string, pg *Postgres) {
 	cluster := &Cluster{
-		pg:   pg,
+		Pg:   pg,
 		Name: name,
 	}
 

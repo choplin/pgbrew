@@ -139,7 +139,7 @@ var clusterCommands = []cli.Command{
 	clusterEnvCommand,
 	clusterStartCommand,
 	clusterStopCommand,
-	clusterPSQLCommand,
+	clusterPsqlCommand,
 }
 
 var clusterCommand = cli.Command{
@@ -191,8 +191,10 @@ var clusterStopCommand = cli.Command{
 	BashComplete: ClusterStopCompletion,
 }
 
-var clusterPSQLCommand = cli.Command{
-	Name:   "psql",
-	Usage:  "Run psql for a specified cluster",
-	Action: DoClusterPSQL,
+var clusterPsqlCommand = cli.Command{
+	Name:            "psql",
+	Usage:           "Run psql for a specified cluster",
+	Action:          DoClusterPsql,
+	BashComplete:    ClusterPsqlCompletion,
+	SkipFlagParsing: true,
 }

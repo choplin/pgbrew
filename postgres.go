@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -58,6 +59,22 @@ func (p *Postgres) PgConfig(option string) (string, error) {
 		return "", err
 	}
 	return strings.TrimRight(string(out), "\n"), nil
+}
+
+func (p *Postgres) Psql(port int, args []string) error {
+	bin := p.binPath("psql")
+	fmt.Println(args)
+	cmd := exec.Command(bin, args...)
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin
+
+	cmd.Env = []string{
+		fmt.Sprintf("PGPORT=%d", port),
+	}
+
+	return cmd.Run()
 }
 
 func (p *Postgres) binPath(name string) string {

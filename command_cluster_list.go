@@ -71,7 +71,7 @@ func jsonClusterList(clusters []*Cluster, detail bool) {
 func buildClusterRow(c *Cluster, detail bool) *ClusterRow {
 	row := &ClusterRow{
 		Name:        c.Name,
-		VersionName: c.pg.Version().Name,
+		VersionName: c.Pg.Version().Name,
 		detail:      detail,
 	}
 	if c.IsRunning() {

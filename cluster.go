@@ -15,7 +15,7 @@ const clusterPortFile = ".pgenv_port"
 type Cluster struct {
 	Name string
 	Port int
-	pg   *Postgres
+	Pg   *Postgres
 }
 
 func NewCluster(name string) (*Cluster, error) {
@@ -51,7 +51,7 @@ func AllClusters() []*Cluster {
 }
 
 func (c *Cluster) Start(port int) error {
-	if err := c.pg.Start(c.Path(), port); err != nil {
+	if err := c.Pg.Start(c.Path(), port); err != nil {
 		return err
 	}
 	c.Port = port
@@ -62,7 +62,7 @@ func (c *Cluster) Start(port int) error {
 }
 
 func (c *Cluster) Stop() error {
-	return c.pg.Stop(c.Path())
+	return c.Pg.Stop(c.Path())
 }
 
 func (c *Cluster) WriteExtraInfoFile() error {
@@ -91,12 +91,12 @@ func (c *Cluster) readExtraInfoFile() error {
 		return err
 	}
 
-	pg, err := NewPostgres(string(out))
+	Pg, err := NewPostgres(string(out))
 	if err != nil {
 		return err
 	}
 
-	c.pg = pg
+	c.Pg = Pg
 	return nil
 }
 
