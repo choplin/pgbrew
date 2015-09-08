@@ -10,10 +10,10 @@ var commandHelps = map[string]string{
 	"install":   "[-n NAME] [-d] [-p] <tag|branch|commit> <configure option>...]",
 	"list":      "[-f pretty|plain|json] [-d]",
 	"uninstall": "<version>",
-	"initdb":    "[-n NAME] <version> [<initdb option>...]",
 }
 
 var clusterSubcommandHelps = map[string]string{
+	"create": "[-n NAME] <version> [<initdb option>...]",
 	"list":   "[-f pretty|plain|json] [-d]",
 	"start":  "<cluster>",
 	"stop":   "<cluster>",
@@ -30,7 +30,6 @@ var commands = []cli.Command{
 	installCommand,
 	listCommand,
 	uninstallCommand,
-	initdbCommand,
 	clusterCommand,
 }
 
@@ -108,20 +107,8 @@ var uninstallCommand = cli.Command{
 	BashComplete: UninstallCompletion,
 }
 
-var initdbCommand = cli.Command{
-	Name:  "initdb",
-	Usage: "Execute initdb to create a new cluster",
-	Flags: []cli.Flag{
-		cli.StringFlag{
-			Name:  "name,n",
-			Usage: "A name for this cluster. A specified <version> is used as a default value.",
-		},
-	},
-	Action:       DoInitdb,
-	BashComplete: InitdbCompletion,
-}
-
 var clusterCommands = []cli.Command{
+	clusterCreateCommand,
 	clusterRemoveCommand,
 	clusterListCommand,
 	clusterEnvCommand,
@@ -142,6 +129,20 @@ var clusterCommand = cli.Command{
 		}
 		return nil
 	},
+}
+
+var clusterCreateCommand = cli.Command{
+	Name:    "create",
+	Aliases: []string{"initdb"},
+	Usage:   "Execute initdb to create a new cluster",
+	Flags: []cli.Flag{
+		cli.StringFlag{
+			Name:  "name,n",
+			Usage: "A name for this cluster. A specified <version> is used as a default value.",
+		},
+	},
+	Action:       DoClusterCreate,
+	BashComplete: ClusterCreateCompletion,
 }
 
 var clusterRemoveCommand = cli.Command{

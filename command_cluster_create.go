@@ -8,7 +8,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-func DoInitdb(c *cli.Context) {
+func DoClusterCreate(c *cli.Context) {
 	args := c.Args()
 	if len(args) == 0 {
 		showHelpAndExit(c, "<version> must be specified")
@@ -44,7 +44,7 @@ func DoInitdb(c *cli.Context) {
 	writeClusterExtraInfoFile(name, pg)
 }
 
-func InitdbCompletion(c *cli.Context) {
+func ClusterCreateCompletion(c *cli.Context) {
 	args := c.Args()
 
 	if len(args) == 0 {
