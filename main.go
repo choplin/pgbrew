@@ -45,7 +45,7 @@ func init() {
 		installBase = filepath.Join(baseDirectory, "versions")
 		clusterBase = filepath.Join(baseDirectory, "clusters")
 		if config.RepositoryPath == "" {
-			localRepository = filepath.Join(baseDirectory, "repository")
+			localRepository = getLocalRepositoryPath(baseDirectory)
 		} else {
 			localRepository = config.RepositoryPath
 		}
@@ -128,6 +128,10 @@ func getConfig(path string) *Config {
 		log.WithField("err", err).Fatal("failed to read a config file")
 	}
 	return config
+}
+
+func getLocalRepositoryPath(baseDirectory string) string {
+	return filepath.Join(baseDirectory, "repository")
 }
 
 func showHelpAndExit(c *cli.Context, msg string) {

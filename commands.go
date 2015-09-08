@@ -5,8 +5,7 @@ import "github.com/codegangsta/cli"
 var tasks = []string{"cook", "clean", "laundry", "eat", "sleep", "code"}
 
 var commandHelps = map[string]string{
-	"init":      "[-b BASE_PATH] [-r REPOSITORY_PATH]",
-	"clone":     "[--] [<git clone option>...]",
+	"init":      "[-b BASE_PATH] [-r REPOSITORY_PATH] [--] [<git clone option>...]",
 	"available": "",
 	"install":   "[-n NAME] [-d] [-p] <tag|branch|commit> <configure option>...]",
 	"list":      "[-f pretty|plain|json] [-d]",
@@ -26,7 +25,6 @@ var clusterSubcommandHelps = map[string]string{
 
 var commands = []cli.Command{
 	initCommand,
-	cloneCommand,
 	updateCommand,
 	availableCommand,
 	installCommand,
@@ -52,12 +50,6 @@ var initCommand = cli.Command{
 			Usage: "Path of PostgreSQL git repository. If this parameter is not set, `init` command will clone it from the official remote repository.",
 		},
 	},
-}
-
-var cloneCommand = cli.Command{
-	Name:   "clone",
-	Usage:  "Clone PostgreSQL git repository into a local directory",
-	Action: DoClone,
 }
 
 var updateCommand = cli.Command{

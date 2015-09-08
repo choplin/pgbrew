@@ -10,6 +10,8 @@ import (
 	"github.com/codegangsta/cli"
 )
 
+const gitUrl = "git://git.postgresql.org/git/postgresql"
+
 func DoInit(c *cli.Context) {
 	if exists(configFilePath) {
 		fmt.Println("already initilized")
@@ -67,6 +69,9 @@ func DoInit(c *cli.Context) {
 	}
 
 	if doClone {
-		println("clone")
+		log.Info("clone postgresql git repository")
+		if err := git.Clone(getLocalRepositoryPath(basePath), gitUrl, c.Args()); err != nil {
+			log.WithField("err", err).Fatal("failed to clone git reporitory")
+		}
 	}
 }
