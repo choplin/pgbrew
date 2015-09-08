@@ -18,13 +18,13 @@ const (
 	APP_EMAIL   = "choplin.choplin@gmail.com"
 )
 
+const configFilePathEnv = "PGENV_CONFIG"
+
 const configFilePathSuffix = ".pgenv/config.json"
 
-var homeDirectory string = getHomeDir()
-
 var (
-	configFilePath string  = filepath.Join(homeDirectory, configFilePathSuffix)
-	config         *Config = getConfig(configFilePath)
+	configFilePath string
+	config         *Config
 )
 
 var (
@@ -35,6 +35,11 @@ var (
 )
 
 func init() {
+	configFilePath = os.Getenv(configFilePathEnv)
+	if configFilePath == "" {
+		configFilePath = filepath.Join(getHomeDir(), configFilePathSuffix)
+	}
+	config = getConfig(configFilePath)
 	if config != nil {
 		baseDirectory = config.BasePath
 		installBase = filepath.Join(baseDirectory, "versions")

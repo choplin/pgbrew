@@ -20,7 +20,7 @@ func DoInit(c *cli.Context) {
 
 	basePath := c.String("base-path")
 	if basePath == "" {
-		basePath = filepath.Join(homeDirectory, ".pgenv")
+		basePath = filepath.Join(getHomeDir(), ".pgenv")
 	}
 	if exists(basePath) {
 		log.Fatalf("base-path %s already exists", basePath)
