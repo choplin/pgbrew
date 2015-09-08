@@ -27,7 +27,7 @@ func ReadConfigFile(path string) (*Config, error) {
 }
 
 func (c *Config) Write(path string) error {
-	out, err := json.Marshal(c)
+	out, err := json.MarshalIndent(c, "", "  ")
 	if err != nil {
 		return err
 	}
