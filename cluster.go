@@ -1,11 +1,14 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 	"regexp"
 	"strconv"
+	"strings"
 
 	log "github.com/Sirupsen/logrus"
 )
@@ -91,6 +94,24 @@ func (c *Cluster) ExtraInfoFilePath() string {
 func (c *Cluster) IsRunning() bool {
 	pidFile := filepath.Join(c.Path(), "postmaster.pid")
 	return exists(pidFile)
+}
+
+func (c *Cluster) Pid() (int, error) {
+	if !c.IsRunning() {
+		return 0, nil
+	}
+	pidFile := filepath.Join(c.Path(), "postmaster.pid")
+	file, err := os.Open(pidFile)
+	if err != nil {
+		return 0, err
+	}
+	defer file.Close()
+	reader := bufio.NewReader(file)
+	line, err := reader.ReadString('\n')
+	if err != nil {
+		return 0, err
+	}
+	return strconv.Atoi(strings.TrimSpace(line))
 }
 
 func (c *Cluster) readExtraInfoFile() error {

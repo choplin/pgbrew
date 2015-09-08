@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
 	"github.com/olekukonko/tablewriter"
 )
@@ -14,8 +16,16 @@ type ClusterRow struct {
 	Name        string `json:"name"`
 	VersionName string `json:"version-name"`
 	State       string `json:"state"`
+	Port        int    `json:"port,omitempty"`
+	Pid         int    `json:"pid,omitempty"`
+	Path        string `json:"path,omitempty"`
 	detail      bool
 }
+
+var (
+	commonheader = []string{"Name", "Version Name", "State"}
+	detailHeader = []string{"Port", "Pid", "Path"}
+)
 
 func DoClusterList(c *cli.Context) {
 	clusters := AllClusters()
@@ -23,8 +33,11 @@ func DoClusterList(c *cli.Context) {
 	format := c.String("format")
 	detail := c.Bool("detail")
 
-	header := []string{"Name", "Version Name", "State"}
+	header := commonheader
 	if detail {
+		for _, h := range detailHeader {
+			header = append(header, h)
+		}
 	}
 
 	switch format {
@@ -79,6 +92,17 @@ func buildClusterRow(c *Cluster, detail bool) *ClusterRow {
 	} else {
 		row.State = "stopped"
 	}
+
+	if detail {
+		row.Port = c.Port
+		pid, err := c.Pid()
+		if err != nil {
+			log.WithField("err", err).Fatal("failed to get a pid")
+		}
+		row.Pid = pid
+		row.Path = c.Path()
+	}
+
 	return row
 }
 
@@ -88,7 +112,19 @@ func (r *ClusterRow) toStringSlice() []string {
 		r.VersionName,
 		r.State,
 	}
-	if !r.detail {
+	if r.detail {
+		if r.Port == 0 {
+			ret = append(ret, "")
+		} else {
+			ret = append(ret, strconv.Itoa(r.Port))
+		}
+
+		if r.Pid == 0 {
+			ret = append(ret, "")
+		} else {
+			ret = append(ret, strconv.Itoa(r.Pid))
+		}
+		ret = append(ret, r.Path)
 	}
 	return ret
 }
