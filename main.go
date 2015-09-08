@@ -20,11 +20,11 @@ const (
 
 const configFilePathSuffix = ".pgenv/config.json"
 
-var homeDirectory string
+var homeDirectory string = getHomeDir()
 
 var (
-	config         *Config
-	configFilePath string
+	configFilePath string  = filepath.Join(homeDirectory, configFilePathSuffix)
+	config         *Config = getConfig(configFilePath)
 )
 
 var (
@@ -35,18 +35,6 @@ var (
 )
 
 func init() {
-	var err error
-	homeDirectory, err = getHomeDir()
-	if err != nil {
-		log.WithField("err", err).Fatal("failed to deterine a home directory")
-	}
-
-	configFilePath = filepath.Join(homeDirectory, configFilePathSuffix)
-	config, err = getConfig(configFilePath)
-	if err != nil {
-		log.WithField("err", err).Fatal("failed to read a config file")
-	}
-
 	if config != nil {
 		baseDirectory = config.BasePath
 		installBase = filepath.Join(baseDirectory, "versions")
@@ -112,21 +100,29 @@ func makeTestEnv() *cli.App {
 	return app
 }
 
-func getHomeDir() (string, error) {
+func getHomeDir() string {
 	usr, err := user.Current()
 	if err != nil {
-		return "", err
+		log.WithField("err", err).Fatal("failed to deterine a home directory")
 	}
-	return filepath.Abs(usr.HomeDir)
+	home, err := filepath.Abs(usr.HomeDir)
+	if err != nil {
+		log.WithField("err", err).Fatal("failed to deterine a home directory")
+	}
+	return home
 }
 
-func getConfig(path string) (*Config, error) {
+func getConfig(path string) *Config {
 	// This may occur in init command
 	if !exists(path) {
-		return nil, nil
+		return nil
 	}
 
-	return ReadConfigFile(path)
+	config, err := ReadConfigFile(path)
+	if err != nil {
+		log.WithField("err", err).Fatal("failed to read a config file")
+	}
+	return config
 }
 
 func showHelpAndExit(c *cli.Context, msg string) {
