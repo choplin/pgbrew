@@ -20,7 +20,7 @@ func DoClusterRemove(c *cli.Context) {
 		log.WithField("err", err).Fatal("failed to get a cluster")
 	}
 
-	log.WithField("name", name).Info("remove a cluster")
+	log.WithField("name", name).Debug("remove a cluster")
 	if err := os.RemoveAll(cluster.Path()); err != nil {
 		log.WithField("err", err).Fatal("failed to remove a cluster")
 	}

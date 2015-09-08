@@ -36,7 +36,7 @@ func DoInitdb(c *cli.Context) {
 		}
 	}
 
-	log.WithField("initdb options", initdbArgs).Info("initdb")
+	log.WithField("initdb options", initdbArgs).Debug("initdb")
 	if err := pg.Initdb(initdbArgs); err != nil {
 		log.WithField("err", err).Fatal("failed to execute initdb")
 	}
@@ -63,7 +63,7 @@ func writeClusterExtraInfoFile(name string, pg *Postgres) {
 
 	log.WithFields(log.Fields{
 		"version name": pg.Version().Name,
-	}).Info("write a cluster extra info file")
+	}).Debug("write a cluster extra info file")
 
 	if err := cluster.WriteExtraInfoFile(); err != nil {
 		log.WithField("err", err).Fatal("failed to write a cluster extra info file")
