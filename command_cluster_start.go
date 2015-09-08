@@ -23,9 +23,19 @@ func DoClusterStart(c *cli.Context) {
 		log.Fatalf("cluster %s is already running", cluster.Name)
 	}
 
-	port, err := util.FindFreePort()
-	if err != nil {
-		log.WithField("err", err).Fatal("failed to find a free port")
+	port := c.Int("port")
+	if port == 0 {
+		if c.Bool("find-free-port") {
+			port, err = util.FindFreePort()
+			if err != nil {
+				log.WithField("err", err).Fatal("failed to find a free port")
+			}
+		} else {
+			port, err = cluster.readPortFromPostgresqlConf()
+			if err != nil {
+				log.WithField("err", err).Fatal("failed to read a postgresql conf")
+			}
+		}
 	}
 
 	log.WithFields(log.Fields{

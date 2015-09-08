@@ -15,7 +15,7 @@ var commandHelps = map[string]string{
 var clusterSubcommandHelps = map[string]string{
 	"create": "[-n NAME] <version> [<initdb option>...]",
 	"list":   "[-f pretty|plain|json] [-d]",
-	"start":  "<cluster>",
+	"start":  "[-p PORT|--find-free-port] <cluster>",
 	"stop":   "<cluster>",
 	"psql":   "<cluster> [<psql options>...]",
 	"env":    "<cluster>",
@@ -176,8 +176,18 @@ var clusterEnvCommand = cli.Command{
 }
 
 var clusterStartCommand = cli.Command{
-	Name:         "start",
-	Usage:        "Start a postgresql process with a specified cluster",
+	Name:  "start",
+	Usage: "Start a postgresql process with a specified cluster",
+	Flags: []cli.Flag{
+		cli.IntFlag{
+			Name:  "port,p",
+			Usage: "A port that a postgresql process will listen.",
+		},
+		cli.BoolFlag{
+			Name:  "find-free-port,f",
+			Usage: "Find a random free port and use it as a listening port",
+		},
+	},
 	Action:       DoClusterStart,
 	BashComplete: ClusterStartCompletion,
 }

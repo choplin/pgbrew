@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"path/filepath"
+	"regexp"
 	"strconv"
 
 	log "github.com/Sirupsen/logrus"
@@ -11,6 +12,10 @@ import (
 
 const clusterExtraInfoFile = ".pgenv_info"
 const clusterPortFile = ".pgenv_port"
+
+const defaultPort = 5432
+
+var portConfigRegexp = regexp.MustCompile(`^\s*port\s*=\s*(\d+)`)
 
 type Cluster struct {
 	Name string
@@ -102,6 +107,23 @@ func (c *Cluster) readExtraInfoFile() error {
 
 	c.Pg = Pg
 	return nil
+}
+
+func (c *Cluster) readPortFromPostgresqlConf() (int, error) {
+	path := filepath.Join(c.Path(), "postgresql.conf")
+	out, err := ioutil.ReadFile(path)
+	if err != nil {
+		return 0, err
+	}
+	if portConfigRegexp.Match(out) {
+		match := portConfigRegexp.FindSubmatch(out)
+		port, err := strconv.Atoi(string(match[1]))
+		if err != nil {
+			return 0, err
+		}
+		return port, nil
+	}
+	return defaultPort, nil
 }
 
 func (c *Cluster) portFilePath() string {
