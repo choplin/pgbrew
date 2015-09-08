@@ -10,7 +10,8 @@ import (
 
 func TestConfig_write(t *testing.T) {
 	c := &Config{
-		BasePath: "test",
+		BasePath:       "test",
+		RepositoryPath: "test-repository",
 	}
 
 	dir, _ := ioutil.TempDir("", "config_test")
@@ -27,7 +28,10 @@ func TestConfig_write(t *testing.T) {
 	}
 
 	str := string(byte)
-	expected := `{"base-path":"test"}`
+	expected := `{
+  "base-path": "test",
+  "repository-path": "test-repository"
+}`
 	if str != expected {
 		t.Errorf("a wrong output of a config file. got %s, want %s", str, expected)
 	}
