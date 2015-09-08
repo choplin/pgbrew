@@ -20,7 +20,7 @@ var clusterSubcommandHelps = map[string]string{
 	"psql":   "<cluster> [<psql options>...]",
 	"env":    "<cluster>",
 	"remove": "<cluster>",
-	"edit":   "<cluster>",
+	"edit":   "<cluster> <file>",
 }
 
 var commands = []cli.Command{
