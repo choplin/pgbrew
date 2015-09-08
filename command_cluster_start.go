@@ -41,7 +41,7 @@ func DoClusterStart(c *cli.Context) {
 	log.WithFields(log.Fields{
 		"pgdata": cluster.Path(),
 		"port":   port,
-	}).Info("start a postgresql process")
+	}).Debug("start a postgresql process")
 	if err := cluster.Start(port); err != nil {
 		log.WithField("err", err).Fatal("failed to start a postgresql process")
 	}

@@ -24,7 +24,7 @@ func DoClusterStop(c *cli.Context) {
 
 	log.WithFields(log.Fields{
 		"pgdata": cluster.Path(),
-	}).Info("stop a postgresql process")
+	}).Debug("stop a postgresql process")
 	if err := cluster.Stop(); err != nil {
 		log.WithField("err", err).Fatal("failed to start a postgresql process")
 	}
