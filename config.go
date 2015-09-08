@@ -8,7 +8,8 @@ import (
 )
 
 type Config struct {
-	BasePath string `json:"base-path"`
+	BasePath       string `json:"base-path"`
+	RepositoryPath string `json:"repository-path,omitempty"`
 }
 
 func ReadConfigFile(path string) (*Config, error) {

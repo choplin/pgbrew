@@ -5,7 +5,7 @@ import "github.com/codegangsta/cli"
 var tasks = []string{"cook", "clean", "laundry", "eat", "sleep", "code"}
 
 var commandHelps = map[string]string{
-	"init":      "[-p PATH]",
+	"init":      "[-b BASE_PATH] [-r REPOSITORY_PATH]",
 	"clone":     "[--] [<git clone option>...]",
 	"available": "",
 	"install":   "[-n NAME] [-d] [-p] <tag|branch|commit> <configure option>...]",
@@ -44,8 +44,12 @@ var initCommand = cli.Command{
 	Action: DoInit,
 	Flags: []cli.Flag{
 		cli.StringFlag{
-			Name:  "path,p",
+			Name:  "base-path,b",
 			Usage: "Path of pgenv base directory. default: ~/.pgenv",
+		},
+		cli.StringFlag{
+			Name:  "repository-path,r",
+			Usage: "Path of PostgreSQL git repository. If this parameter is not set, `init` command will clone it from the official remote repository.",
 		},
 	},
 }

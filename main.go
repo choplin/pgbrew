@@ -49,9 +49,13 @@ func init() {
 
 	if config != nil {
 		baseDirectory = config.BasePath
-		localRepository = filepath.Join(baseDirectory, "repository")
 		installBase = filepath.Join(baseDirectory, "versions")
 		clusterBase = filepath.Join(baseDirectory, "clusters")
+		if config.RepositoryPath == "" {
+			localRepository = filepath.Join(baseDirectory, "repository")
+		} else {
+			localRepository = config.RepositoryPath
+		}
 	}
 }
 

@@ -21,6 +21,6 @@ func isEmpty(dirname string) bool {
 	return len(fs) == 0
 }
 
-func isGitRepository(dirname string) bool {
+func IsGitRepository(dirname string) bool {
 	return exists(filepath.Join(dirname, ".git"))
 }

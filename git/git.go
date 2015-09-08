@@ -30,7 +30,7 @@ type repository struct {
 }
 
 func NewRepository(path string) (*repository, error) {
-	if !isGitRepository(path) {
+	if !IsGitRepository(path) {
 		return nil, errors.New("local reporitory is not initialized")
 	}
 
