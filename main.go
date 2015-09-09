@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	"os"
-	"os/user"
 	"path/filepath"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
+	home "github.com/mitchellh/go-homedir"
 )
 
 const (
@@ -106,11 +106,7 @@ func makeTestEnv() *cli.App {
 }
 
 func getHomeDir() string {
-	usr, err := user.Current()
-	if err != nil {
-		log.WithField("err", err).Fatal("failed to deterine a home directory")
-	}
-	home, err := filepath.Abs(usr.HomeDir)
+	home, err := home.Dir()
 	if err != nil {
 		log.WithField("err", err).Fatal("failed to deterine a home directory")
 	}
