@@ -11,11 +11,11 @@ import (
 )
 
 const (
-	APP_NAME    = "pgenv"
-	APP_USAGE   = "Manage PostgreSQL environment"
-	APP_VERSION = "0.1-SNAPSHOT"
-	APP_AUTHOR  = "Akihiro Okuno"
-	APP_EMAIL   = "choplin.choplin@gmail.com"
+	appName    = "pgenv"
+	appUsage   = "Manage PostgreSQL environment"
+	appVersion = "0.1-SNAPSHOT"
+	appAuthor  = "Akihiro Okuno"
+	appEmail   = "choplin.choplin@gmail.com"
 )
 
 const configFilePathEnv = "PGENV_CONFIG"
@@ -59,11 +59,11 @@ func main() {
 
 func makeApp() *cli.App {
 	app := cli.NewApp()
-	app.Author = APP_AUTHOR
-	app.Email = APP_EMAIL
-	app.Name = APP_NAME
-	app.Usage = APP_USAGE
-	app.Version = APP_VERSION
+	app.Author = appAuthor
+	app.Email = appEmail
+	app.Name = appName
+	app.Usage = appUsage
+	app.Version = appVersion
 	app.EnableBashCompletion = true
 
 	app.Flags = []cli.Flag{
