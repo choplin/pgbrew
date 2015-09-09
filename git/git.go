@@ -61,7 +61,15 @@ func (r *repository) Tags() ([]string, error) {
 }
 
 func (r *repository) Checkout(gitRef string) (string, error) {
-	cmd := r.gitCommand("checkout", "-f", "-q", gitRef)
+	cmd := r.gitCommand("checkout", "-q", "-f", gitRef)
+	if out, err := cmd.CombinedOutput(); err != nil {
+		return string(out), err
+	}
+	return "", nil
+}
+
+func (r *repository) CheckoutWithWorkTree(gitRef string, worktree string) (string, error) {
+	cmd := r.gitCommand("--work-tree", worktree, "checkout", "-q", "-f", gitRef)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		return string(out), err
 	}

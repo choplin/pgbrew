@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
@@ -34,13 +36,10 @@ func DoInstall(c *cli.Context) {
 	installPath := filepath.Join(installBase, name)
 	parallel := c.Bool("parallel")
 
-	hash := doCheckout(gitRef)
-
-	configure(installPath, configureOptions, debug)
-
-	makeClean()
-
-	makeInstall(parallel)
+	hash, err := build(gitRef, installPath, configureOptions, debug, parallel)
+	if err != nil {
+		log.WithField("err", err).Fatal("failed to build")
+	}
 
 	WriteExtraInfoFile(name, gitRef, hash)
 }
@@ -61,69 +60,77 @@ func InstallCompletion(c *cli.Context) {
 	}
 }
 
-func doCheckout(gitRef string) string {
+func build(gitRef string, installPath string, configureOptions []string, debug bool, parallel bool) (string, error) {
+	workdir, err := ioutil.TempDir("", "pgbrew-install")
+	if err != nil {
+		return "", fmt.Errorf("failed to create a temporary directory: %s", err)
+	}
+	defer os.RemoveAll(workdir)
+	log.WithField("path", workdir).Debug("create a temporary working directory")
+
+	hash, err := doCheckout(gitRef, workdir)
+	if err != nil {
+		return "", err
+	}
+
+	if err := configure(workdir, installPath, configureOptions, debug); err != nil {
+		return "", err
+	}
+
+	if err := makeInstall(parallel, workdir); err != nil {
+		return "", err
+	}
+
+	return hash, nil
+}
+
+func doCheckout(gitRef string, workdir string) (string, error) {
 	log.WithField("git ref", gitRef).Info("git checkout")
 
 	repo, err := git.NewRepository(localRepository)
 	if err != nil {
-		log.WithField("err", err).Fatal("failed to initialize local reporitory")
+		return "", fmt.Errorf("failed to get a repository: %s", err)
 	}
 
-	if out, err := repo.Checkout(gitRef); err != nil {
-		log.WithFields(log.Fields{
-			"git ref": gitRef,
-			"err":     err.Error(),
-			"out":     out,
-		}).Fatal("failed to checkout")
+	if out, err := repo.CheckoutWithWorkTree(gitRef, workdir); err != nil {
+		return "", fmt.Errorf("failed to checkout: %s, %s", err, out)
 	}
+	defer repo.Checkout("master")
+
 	hash, err := repo.HeadHash()
-
 	if err != nil {
-		log.WithFields(log.Fields{
-			"err": err.Error(),
-			"out": hash,
-		}).Fatal("failed to get a hash of HEAD")
+		return "", fmt.Errorf("failed to get a hash of HEAD: %s", err)
 	}
 
-	return hash
+	return hash, nil
 }
 
-func configure(installPath string, options []string, debug bool) {
-	cmd := configureCommand(installPath, options, debug)
+func configure(workdir string, installPath string, options []string, debug bool) error {
+	cmd := configureCommand(workdir, installPath, options, debug)
 
 	log.WithField("configure options", cmd.Args[1:]).Info("configure")
 
 	err := util.RunCommandWithDebugLog(cmd)
 	if err != nil {
-		log.WithFields(log.Fields{
-			"options": cmd.Args[1:],
-			"err":     err.Error(),
-		}).Fatal("failed to configure")
+		return err
 	}
+	return nil
 }
 
-func makeInstall(parallel bool) {
+func makeInstall(parallel bool, workdir string) error {
 	args := []string{"install"}
 	if parallel {
 		args = append(args, "-j")
 		args = append(args, fmt.Sprint(runtime.NumCPU()))
 	}
 	cmd := exec.Command("make", args...)
-	cmd.Dir = localRepository
+	cmd.Dir = workdir
 
 	log.WithField("options", cmd.Args[2:]).Info("make install")
 	if err := util.RunCommandWithDebugLog(cmd); err != nil {
-		log.WithField("err", err).Fatal("failed to make install")
+		return fmt.Errorf("failed to make install: %s", err)
 	}
-}
-
-func makeClean() {
-	log.Info("make clean")
-	cmd := exec.Command("make", "clean")
-	cmd.Dir = localRepository
-	if err := util.RunCommandWithDebugLog(cmd); err != nil {
-		log.WithField("err", err).Fatal("failed to make clean")
-	}
+	return nil
 }
 
 func WriteExtraInfoFile(name string, gitRef string, hash string) {
@@ -144,7 +151,7 @@ func WriteExtraInfoFile(name string, gitRef string, hash string) {
 	}
 }
 
-func configureCommand(path string, options []string, debug bool) *exec.Cmd {
+func configureCommand(workdir string, path string, options []string, debug bool) *exec.Cmd {
 	args := []string{"--prefix", path}
 	for _, o := range options {
 		args = append(args, o)
@@ -155,7 +162,7 @@ func configureCommand(path string, options []string, debug bool) *exec.Cmd {
 	}
 
 	cmd := exec.Command("./configure", args...)
-	cmd.Dir = localRepository
+	cmd.Dir = workdir
 
 	return cmd
 }
