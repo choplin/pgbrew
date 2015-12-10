@@ -9,13 +9,16 @@ import (
 const gitURL = "git://git.postgresql.org/git/postgresql"
 
 func DoClone(c *cli.Context) {
+	localRepository := config.RepositoryPath
 	if localRepository != "" {
-		if git.IsGitRepository(localRepository) {
+		if git.IsGitRepository(config.RepositoryPath) {
 			log.Fatalf("local repository %s already exists", localRepository)
+		} else {
+			log.Fatalf("local repository %s already exists, but seems not be a git repository", localRepository)
 		}
 	}
 
-	config.RepositoryPath = localRepository
+	config.RepositoryPath = baseDir.defaultLocalRepository()
 	log.WithFields(log.Fields{
 		"config": config,
 		"path":   configFilePath,

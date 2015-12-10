@@ -33,7 +33,7 @@ func DoInstall(c *cli.Context) {
 	if name == "" {
 		name = defaultName(gitRef, debug)
 	}
-	installPath := filepath.Join(installBase, name)
+	installPath := filepath.Join(baseDir.installDir(), name)
 	parallel := c.Bool("parallel")
 
 	hash, err := build(gitRef, installPath, configureOptions, debug, parallel)
@@ -46,7 +46,7 @@ func DoInstall(c *cli.Context) {
 
 func InstallCompletion(c *cli.Context) {
 	if len(c.Args()) == 0 {
-		repo, err := git.NewRepository(localRepository)
+		repo, err := git.NewRepository(config.RepositoryPath)
 		if err != nil {
 			log.WithField("err", err).Fatal("failed to initialize local reporitory")
 		}
@@ -87,7 +87,7 @@ func build(gitRef string, installPath string, configureOptions []string, debug b
 func doCheckout(gitRef string, workdir string) (string, error) {
 	log.WithField("git ref", gitRef).Info("git checkout")
 
-	repo, err := git.NewRepository(localRepository)
+	repo, err := git.NewRepository(config.RepositoryPath)
 	if err != nil {
 		return "", fmt.Errorf("failed to get a repository: %s", err)
 	}

@@ -11,7 +11,7 @@ func TestUpdateCommand(t *testing.T) {
 		t.Skip("skip a test for update command")
 	}
 
-	repo, err := git.NewRepository(localRepository)
+	repo, err := git.NewRepository(config.RepositoryPath)
 	if err != nil {
 		t.Fatal("failed to initialize a reporitory")
 	}

@@ -24,7 +24,7 @@ func DoClusterEnv(c *cli.Context) {
 export PGDATA=%s
 `
 	path := filepath.Join(cluster.Pg.Version().Path(), "bin")
-	fmt.Printf(format, path, installBase, cluster.Path())
+	fmt.Printf(format, path, baseDir.installDir(), cluster.Path())
 
 	if cluster.IsRunning() {
 		fmt.Printf("export PGPORT=%d\n", cluster.Port)

@@ -42,7 +42,7 @@ func NewCluster(name string) (*Cluster, error) {
 }
 
 func AllClusters() []*Cluster {
-	fis, err := ioutil.ReadDir(clusterBase)
+	fis, err := ioutil.ReadDir(baseDir.clusterDir())
 	if err != nil {
 		log.WithField("err", err).Fatal("failed to get all clusters")
 	}
@@ -84,7 +84,7 @@ func (c *Cluster) WriteExtraInfoFile() error {
 }
 
 func (c *Cluster) Path() string {
-	return filepath.Join(clusterBase, c.Name)
+	return filepath.Join(baseDir.clusterDir(), c.Name)
 }
 
 func (c *Cluster) ExtraInfoFilePath() string {

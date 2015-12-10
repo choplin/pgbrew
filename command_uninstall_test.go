@@ -9,8 +9,8 @@ import (
 func TestUninstallCommand(t *testing.T) {
 	target := "test"
 
-	src := filepath.Join(installBase, "9.4.4")
-	dest := filepath.Join(installBase, target)
+	src := filepath.Join(baseDir.installDir(), "9.4.4")
+	dest := filepath.Join(baseDir.installDir(), target)
 	cmd := exec.Command("cp", "-prf", src, dest)
 	if err := cmd.Run(); err != nil {
 		t.Fatal("failed to run cp command")

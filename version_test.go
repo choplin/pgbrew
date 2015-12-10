@@ -37,7 +37,7 @@ func TestAllVersions(t *testing.T) {
 func TestVersion_Path(t *testing.T) {
 	version, _ := NewVersion("9.4.4")
 	path := version.Path()
-	want := filepath.Join(installBase, "9.4.4")
+	want := filepath.Join(baseDir.installDir(), "9.4.4")
 	if path != want {
 		t.Errorf("Version.Path() returned a wrong path. got %s, want %s", path, want)
 	}
@@ -46,7 +46,7 @@ func TestVersion_Path(t *testing.T) {
 func TestVersion_VersionFilePath(t *testing.T) {
 	version, _ := NewVersion("9.4.4")
 	path := version.ExtraInfoFilePath()
-	want := filepath.Join(installBase, "9.4.4", versionExtraInfoFile)
+	want := filepath.Join(baseDir.installDir(), "9.4.4", versionExtraInfoFile)
 	if path != want {
 		t.Errorf("Version.ExtraInfoFilePath() returned a wrong path. got %s, want %s", path, want)
 	}

@@ -39,7 +39,7 @@ func NewVersion(name string) (*Version, error) {
 }
 
 func AllVersions() []*Version {
-	fis, err := ioutil.ReadDir(installBase)
+	fis, err := ioutil.ReadDir(baseDir.installDir())
 	if err != nil {
 		log.WithField("err", err).Fatal("failed to get all installed versions")
 	}
@@ -62,7 +62,7 @@ func (v *Version) WriteExtraInfoFile() error {
 }
 
 func (v *Version) Path() string {
-	return filepath.Join(installBase, v.Name)
+	return filepath.Join(baseDir.installDir(), v.Name)
 }
 
 func (v *Version) ExtraInfoFilePath() string {

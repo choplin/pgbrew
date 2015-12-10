@@ -27,12 +27,7 @@ var (
 	config         *Config
 )
 
-var (
-	baseDirectory   string
-	localRepository string
-	installBase     string
-	clusterBase     string
-)
+var baseDir BaseDir
 
 func init() {
 	configFilePath = os.Getenv(configFilePathEnv)
@@ -41,14 +36,7 @@ func init() {
 	}
 	config = getConfig(configFilePath)
 	if config != nil {
-		baseDirectory = config.BasePath
-		installBase = filepath.Join(baseDirectory, "versions")
-		clusterBase = filepath.Join(baseDirectory, "clusters")
-		if config.RepositoryPath == "" {
-			localRepository = filepath.Join(baseDirectory, "repository")
-		} else {
-			localRepository = config.RepositoryPath
-		}
+		baseDir = BaseDir(config.BasePath)
 	}
 }
 

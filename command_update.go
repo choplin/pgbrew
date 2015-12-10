@@ -9,7 +9,7 @@ import (
 
 func DoUpdate(c *cli.Context) {
 	log.Info("update a local git repository")
-	repo, err := git.NewRepository(localRepository)
+	repo, err := git.NewRepository(config.RepositoryPath)
 	if err != nil {
 		log.WithField("err", err).Fatal("failed to initialize a reporitory")
 	}

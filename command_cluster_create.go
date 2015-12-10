@@ -24,7 +24,7 @@ func DoClusterCreate(c *cli.Context) {
 		name = pg.Version().Name
 	}
 
-	path := filepath.Join(clusterBase, name)
+	path := filepath.Join(baseDir.clusterDir(), name)
 	if exists(path) {
 		log.WithField("name", name).Fatal("cluster already exists")
 	}

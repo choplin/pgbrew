@@ -10,7 +10,7 @@ import (
 )
 
 func DoAvailable(c *cli.Context) {
-	repo, err := git.NewRepository(localRepository)
+	repo, err := git.NewRepository(config.RepositoryPath)
 	if err != nil {
 		log.WithField("err", err).Fatal("failed to initialize local reporitory")
 	}
