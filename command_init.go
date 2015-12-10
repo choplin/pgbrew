@@ -9,6 +9,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
+// DoInit is an implementation of init command
 func DoInit(c *cli.Context) {
 	if exists(configFilePath) {
 		fmt.Println("already initilized")

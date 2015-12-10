@@ -15,6 +15,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
+// DoInstall is an implementation of install command
 func DoInstall(c *cli.Context) {
 	args := c.Args()
 	if len(args) == 0 {
@@ -41,9 +42,10 @@ func DoInstall(c *cli.Context) {
 		log.WithField("err", err).Fatal("failed to build")
 	}
 
-	WriteExtraInfoFile(name, gitRef, hash)
+	writeExtraInfoFile(name, gitRef, hash)
 }
 
+// InstallCompletion provides cli completion of install command
 func InstallCompletion(c *cli.Context) {
 	if len(c.Args()) == 0 {
 		repo, err := git.NewRepository(config.RepositoryPath)
@@ -133,7 +135,7 @@ func makeInstall(parallel bool, workdir string) error {
 	return nil
 }
 
-func WriteExtraInfoFile(name string, gitRef string, hash string) {
+func writeExtraInfoFile(name string, gitRef string, hash string) {
 	installedVersion := Version{
 		Name:   name,
 		GitRef: gitRef,

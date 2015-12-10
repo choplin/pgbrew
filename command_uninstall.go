@@ -8,6 +8,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
+// DoUninstall is an implementation of uninstall command
 func DoUninstall(c *cli.Context) {
 	args := c.Args()
 	if len(args) != 1 {
@@ -26,6 +27,7 @@ func DoUninstall(c *cli.Context) {
 	}
 }
 
+// UninstallCompletion provides cli completion of uninstall command
 func UninstallCompletion(c *cli.Context) {
 	if len(c.Args()) == 0 {
 		versions := AllVersions()

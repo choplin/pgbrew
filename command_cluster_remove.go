@@ -8,6 +8,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
+// DoClusterRemove is an implementation of cluster remove command
 func DoClusterRemove(c *cli.Context) {
 	args := c.Args()
 	if len(args) != 1 {
@@ -26,8 +27,8 @@ func DoClusterRemove(c *cli.Context) {
 	}
 }
 
+// ClusterRemoveCompletion provides cli completion of cluster remove command
 func ClusterRemoveCompletion(c *cli.Context) {
-
 	if len(c.Args()) == 0 {
 		for _, c := range AllClusters() {
 			fmt.Println(c.Name)

@@ -11,6 +11,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
+// DoClusterEdit is an implementation of cluster edit command
 func DoClusterEdit(c *cli.Context) {
 	args := c.Args()
 	if len(args) != 2 {
@@ -38,6 +39,7 @@ func DoClusterEdit(c *cli.Context) {
 	cmd.Run()
 }
 
+// ClusterEditCompletion provides cli completion of cluster edit command
 func ClusterEditCompletion(c *cli.Context) {
 	args := c.Args()
 	if len(args) == 0 {

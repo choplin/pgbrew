@@ -7,11 +7,13 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
+// Config represents global configs of pgenv
 type Config struct {
 	BasePath       string `json:"base-path"`
 	RepositoryPath string `json:"repository-path,omitempty"`
 }
 
+// ReadConfigFile reads a config and instanciate Config
 func ReadConfigFile(path string) (*Config, error) {
 	content, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -26,6 +28,7 @@ func ReadConfigFile(path string) (*Config, error) {
 	return &config, nil
 }
 
+// Write serialize a content of Config and write it to a file
 func (c *Config) Write(path string) error {
 	out, err := json.MarshalIndent(c, "", "  ")
 	if err != nil {

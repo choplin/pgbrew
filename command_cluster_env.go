@@ -8,6 +8,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
+// DoClusterEnv is an implementation of cluster env command
 func DoClusterEnv(c *cli.Context) {
 	args := c.Args()
 	if len(args) == 0 {
@@ -31,6 +32,7 @@ export PGDATA=%s
 	}
 }
 
+// ClusterEnvCompletion provides cli completion of cluster env command
 func ClusterEnvCompletion(c *cli.Context) {
 	if len(c.Args()) == 0 {
 		for _, c := range AllClusters() {

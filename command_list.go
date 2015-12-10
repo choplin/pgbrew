@@ -11,6 +11,7 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
+// Row represents a row of output of list command
 type Row struct {
 	Name             string   `json:"name"`
 	Version          string   `json:"version"`
@@ -21,6 +22,7 @@ type Row struct {
 	detail           bool
 }
 
+// DoList is an implementation of list command
 func DoList(c *cli.Context) {
 	versions := AllVersions()
 
@@ -104,14 +106,14 @@ func (r *Row) toStringSlice() []string {
 			r.Name,
 			r.Version,
 		}
-	} else {
-		return []string{
-			r.Name,
-			r.Version,
-			r.GitRef,
-			r.Hash,
-			r.Path,
-			strings.Join(r.ConfigureOptions, " "),
-		}
+	}
+
+	return []string{
+		r.Name,
+		r.Version,
+		r.GitRef,
+		r.Hash,
+		r.Path,
+		strings.Join(r.ConfigureOptions, " "),
 	}
 }

@@ -20,12 +20,14 @@ const defaultPort = 5432
 
 var portConfigRegexp = regexp.MustCompile(`^\s*port\s*=\s*(\d+)`)
 
+// Cluster represents each postgresql cluster
 type Cluster struct {
 	Name string
 	Port int
 	Pg   *Postgres
 }
 
+// NewCluster instanciate and initialize Cluster
 func NewCluster(name string) (*Cluster, error) {
 	c := &Cluster{Name: name}
 	if !exists(c.Path()) {
@@ -41,6 +43,7 @@ func NewCluster(name string) (*Cluster, error) {
 	return c, nil
 }
 
+// AllClusters lists all clusters which is already initialized
 func AllClusters() []*Cluster {
 	fis, err := ioutil.ReadDir(baseDir.clusterDir())
 	if err != nil {
@@ -58,6 +61,7 @@ func AllClusters() []*Cluster {
 	return clusters
 }
 
+// Start starts a postmaster process with this clsuter
 func (c *Cluster) Start(port int) error {
 	if err := c.Pg.Start(c.Path(), port); err != nil {
 		return err
@@ -69,6 +73,7 @@ func (c *Cluster) Start(port int) error {
 	return nil
 }
 
+// Stop stops a postmaster process with this clsuter
 func (c *Cluster) Stop() error {
 	if err := c.Pg.Stop(c.Path()); err != nil {
 		return err
@@ -77,25 +82,30 @@ func (c *Cluster) Stop() error {
 	return nil
 }
 
+// WriteExtraInfoFile writes extra information of this cluster into a file
 func (c *Cluster) WriteExtraInfoFile() error {
 	path := c.ExtraInfoFilePath()
 	str := c.Name
 	return ioutil.WriteFile(path, []byte(str), 0600)
 }
 
+// Path return a path of this cluster on the filesystem
 func (c *Cluster) Path() string {
 	return filepath.Join(baseDir.clusterDir(), c.Name)
 }
 
+// ExtraInfoFilePath return a path of the extra information file on the filesystem
 func (c *Cluster) ExtraInfoFilePath() string {
 	return filepath.Join(c.Path(), clusterExtraInfoFile)
 }
 
+// IsRunning returns true if a postmaster with this cluster is running
 func (c *Cluster) IsRunning() bool {
 	pidFile := filepath.Join(c.Path(), "postmaster.pid")
 	return exists(pidFile)
 }
 
+// Pid returns a pid of a postmaster process with this cluster
 func (c *Cluster) Pid() (int, error) {
 	if !c.IsRunning() {
 		return 0, nil

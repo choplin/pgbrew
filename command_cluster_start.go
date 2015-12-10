@@ -8,6 +8,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
+// DoClusterStart is an implementation of cluster start command
 func DoClusterStart(c *cli.Context) {
 	args := c.Args()
 	if len(args) == 0 {
@@ -47,6 +48,7 @@ func DoClusterStart(c *cli.Context) {
 	}
 }
 
+// ClusterStartCompletion provides cli completion of cluster start command
 func ClusterStartCompletion(c *cli.Context) {
 	if len(c.Args()) == 0 {
 		for _, c := range AllClusters() {

@@ -8,6 +8,7 @@ import (
 
 const gitURL = "git://git.postgresql.org/git/postgresql"
 
+// DoClone is an implementation of clone command
 func DoClone(c *cli.Context) {
 	localRepository := config.RepositoryPath
 	if localRepository != "" {

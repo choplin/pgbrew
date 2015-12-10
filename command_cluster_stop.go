@@ -7,6 +7,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
+// DoClusterStop is an implementation of cluster stop command
 func DoClusterStop(c *cli.Context) {
 	args := c.Args()
 	if len(args) == 0 {
@@ -30,6 +31,7 @@ func DoClusterStop(c *cli.Context) {
 	}
 }
 
+// ClusterStopCompletion provides cli completion of cluster stop command
 func ClusterStopCompletion(c *cli.Context) {
 	if len(c.Args()) == 0 {
 		for _, c := range AllClusters() {

@@ -7,6 +7,7 @@ import (
 	"github.com/choplin/pgenv/git"
 )
 
+// DoUpdate is an implementation of update command
 func DoUpdate(c *cli.Context) {
 	log.Info("update a local git repository")
 	repo, err := git.NewRepository(config.RepositoryPath)

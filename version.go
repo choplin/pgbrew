@@ -24,6 +24,7 @@ type VersionDetail struct {
 	ConfigureOptions []string
 }
 
+// NewVersion instanciate and initialize version with a specified name
 func NewVersion(name string) (*Version, error) {
 	version := &Version{Name: name}
 	path := version.Path()
@@ -38,6 +39,7 @@ func NewVersion(name string) (*Version, error) {
 	return version, nil
 }
 
+// AllVersions lists all installed versions
 func AllVersions() []*Version {
 	fis, err := ioutil.ReadDir(baseDir.installDir())
 	if err != nil {
@@ -55,20 +57,24 @@ func AllVersions() []*Version {
 	return versions
 }
 
+// WriteExtraInfoFile writes extra information of this version into a file
 func (v *Version) WriteExtraInfoFile() error {
 	path := v.ExtraInfoFilePath()
 	str := v.Hash + "\t" + v.GitRef
 	return ioutil.WriteFile(path, []byte(str), 0644)
 }
 
+// Path returns a path of this version on the filesystem
 func (v *Version) Path() string {
 	return filepath.Join(baseDir.installDir(), v.Name)
 }
 
+// ExtraInfoFilePath returns a path of extra info file on the filesystem
 func (v *Version) ExtraInfoFilePath() string {
 	return filepath.Join(v.Path(), versionExtraInfoFile)
 }
 
+// Detail returns a detailed information of this version
 func (v *Version) Detail() (*VersionDetail, error) {
 	pg := &Postgres{v}
 	configureOut, err := pg.PgConfig("--configure")
@@ -86,6 +92,7 @@ func (v *Version) Detail() (*VersionDetail, error) {
 	}, nil
 }
 
+// PgVersion returns a result of `pg --versions` of this version
 func (v *Version) PgVersion() (string, error) {
 	pg := &Postgres{v}
 	version, err := pg.PgConfig("--version")

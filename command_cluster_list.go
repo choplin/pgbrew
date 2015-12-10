@@ -12,6 +12,7 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
+// ClusterRow represents a row of output of cluster list command
 type ClusterRow struct {
 	Name        string `json:"name"`
 	VersionName string `json:"version-name"`
@@ -27,6 +28,7 @@ var (
 	detailHeader = []string{"Port", "Pid", "Path"}
 )
 
+// DoClusterList is an implementation of cluster list command
 func DoClusterList(c *cli.Context) {
 	clusters := AllClusters()
 

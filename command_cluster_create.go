@@ -8,6 +8,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
+// DoClusterCreate is an implementation of cluster create command
 func DoClusterCreate(c *cli.Context) {
 	args := c.Args()
 	if len(args) == 0 {
@@ -44,6 +45,7 @@ func DoClusterCreate(c *cli.Context) {
 	writeClusterExtraInfoFile(name, pg)
 }
 
+// ClusterCreateCompletion provides cli completion of cluster create command
 func ClusterCreateCompletion(c *cli.Context) {
 	args := c.Args()
 

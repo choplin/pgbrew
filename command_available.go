@@ -9,6 +9,7 @@ import (
 	"github.com/choplin/pgenv/git"
 )
 
+// DoAvailable is an implementation of available command
 func DoAvailable(c *cli.Context) {
 	repo, err := git.NewRepository(config.RepositoryPath)
 	if err != nil {

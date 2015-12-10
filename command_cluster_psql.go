@@ -7,6 +7,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
+// DoClusterPsql is an implementation of cluster psql command
 func DoClusterPsql(c *cli.Context) {
 	args := c.Args()
 	if len(args) == 0 {
@@ -32,6 +33,7 @@ func DoClusterPsql(c *cli.Context) {
 	cluster.Pg.Psql(cluster.Port, psqlArgs)
 }
 
+// ClusterPsqlCompletion provides cli completion of cluster psql command
 func ClusterPsqlCompletion(c *cli.Context) {
 	if len(c.Args()) == 0 {
 		for _, c := range AllClusters() {
