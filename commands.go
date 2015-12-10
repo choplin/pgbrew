@@ -5,7 +5,8 @@ import "github.com/codegangsta/cli"
 var tasks = []string{"cook", "clean", "laundry", "eat", "sleep", "code"}
 
 var commandHelps = map[string]string{
-	"init":      "[-b BASE_PATH] [-r REPOSITORY_PATH] [--] [<git clone option>...]",
+	"init":      "[-b BASE_PATH]",
+	"clone":     "[--] [<git clone option>...]",
 	"available": "",
 	"install":   "[-n NAME] [-d] [-p] <tag|branch|commit> <configure option>...]",
 	"list":      "[-f pretty|plain|json] [-d]",
@@ -25,6 +26,7 @@ var clusterSubcommandHelps = map[string]string{
 
 var commands = []cli.Command{
 	initCommand,
+	cloneCommand,
 	updateCommand,
 	availableCommand,
 	installCommand,
@@ -34,11 +36,10 @@ var commands = []cli.Command{
 }
 
 var initCommand = cli.Command{
-	Name:  "init",
-	Usage: "Initialize pgenv environment",
-	Description: `During initialization process, a config file will be created at ~/.pgenv/config.json.
-   This path is not related to a pgenv base directory, and not configurable.`,
-	Action: DoInit,
+	Name:        "init",
+	Usage:       "Initialize pgenv environment",
+	Description: `During initialization process, a config file will be created at ~/.pgenv/config.json. Although this file will be created under the base directory as a default, the path of the config file is independent from a pgenv base directory, and not configurable.`,
+	Action:      DoInit,
 	Flags: []cli.Flag{
 		cli.StringFlag{
 			Name:  "base-path,b",
@@ -49,6 +50,13 @@ var initCommand = cli.Command{
 			Usage: "Path of PostgreSQL git repository. If this parameter is not set, `init` command will clone it from the official remote repository.",
 		},
 	},
+}
+
+var cloneCommand = cli.Command{
+	Name:        "clone",
+	Usage:       "Clone postgresql git repository",
+	Description: `Execute git clone to retrive a clone of the official postgresql git repository. You can set any git option by passing options after '--'`,
+	Action:      DoClone,
 }
 
 var updateCommand = cli.Command{
