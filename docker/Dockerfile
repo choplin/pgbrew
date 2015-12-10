@@ -21,3 +21,7 @@ RUN pgenv install REL9_4_4 && \
 
 RUN pgenv cluster create 9.4.4 && \
     pgenv cluster create 9.3.9-debug
+
+ENV GOPATH=/home/postgres/.go
+
+RUN mkdir -p $GOPATH/src/github.com

@@ -1,4 +1,5 @@
-src_dir := /go/src/github.com/choplin/pgenv
+container_gopath := /home/postgres/.go
+src_dir := $(container_gopath)/src/github.com/choplin/pgenv
 go_srcs := $(shell find $(CURDIR) -name '*.go')
 
 .PHONY: all clean test docker-test build-docker-image dev-test
@@ -16,7 +17,7 @@ test:
 
 docker-test:
 	go get -d ./...
-	go build -v
+	go build
 	go test ./...
 
 build-docker-image: docker/pgenv
@@ -26,4 +27,4 @@ docker/pgenv: $(go_srcs)
 	GOOS=linux GOARCH=amd64 go build -o docker/pgenv
 
 dev-test:
-	docker run --rm -v $(GOPATH)/src:/go/src -w $(src_dir) choplin/pgenv-test-env go test --short ./...
+	docker run --rm -v $(GOPATH)/src:$(container_gopath)/src -w $(src_dir) choplin/pgenv-test-env go test --short ./...
